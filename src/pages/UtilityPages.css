@@ -1,0 +1,176 @@
+.utility-page {
+  width: 100%;
+  padding-bottom: 60px;
+}
+
+.content-section {
+  max-width: 900px;
+  margin: 60px auto;
+}
+
+.content-section section {
+  margin-bottom: 50px;
+}
+
+.content-section h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #2c3e50;
+  margin-bottom: 20px;
+  padding-bottom: 10px;
+  border-bottom: 3px solid #ff6b6b;
+}
+
+.content-section h3 {
+  font-size: 1.4rem;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 15px;
+}
+
+.content-section p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 15px;
+}
+
+.content-section ul {
+  list-style: none;
+  padding-left: 0;
+  margin: 20px 0;
+}
+
+.content-section ul li {
+  padding: 10px 0 10px 30px;
+  color: #555;
+  position: relative;
+  line-height: 1.6;
+}
+
+.content-section ul li:before {
+  content: "▸";
+  position: absolute;
+  left: 0;
+  color: #ff6b6b;
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.content-section a {
+  color: #ff6b6b;
+  text-decoration: underline;
+  transition: color 0.3s ease;
+}
+
+.content-section a:hover {
+  color: #ff5252;
+}
+
+.officer-info {
+  background: #f8f9fa;
+  padding: 25px;
+  border-radius: 10px;
+  margin-top: 20px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.officer-info p {
+  margin-bottom: 10px;
+  font-size: 1rem;
+}
+
+.grievance-form {
+  background: #f8f9fa;
+  padding: 40px;
+  border-radius: 15px;
+  margin-top: 30px;
+}
+
+.form-group {
+  margin-bottom: 25px;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: #2c3e50;
+  margin-bottom: 8px;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 15px;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 15px;
+  font-family: inherit;
+  transition: border-color 0.3s ease;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #ff6b6b;
+}
+
+.form-group textarea {
+  resize: vertical;
+}
+
+.grievance-form .btn-primary {
+  width: 100%;
+  padding: 15px;
+  font-size: 16px;
+  margin-top: 10px;
+}
+
+.opportunity-card {
+  background: white;
+  padding: 35px;
+  border-radius: 15px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+  margin-top: 25px;
+  border-left: 4px solid #ff6b6b;
+}
+
+.opportunity-card h3 {
+  color: #ff6b6b;
+  margin-bottom: 15px;
+}
+
+.opportunity-card p {
+  margin-bottom: 20px;
+}
+
+.opportunity-card ul {
+  margin-bottom: 25px;
+}
+
+.opportunity-card .btn-primary,
+.opportunity-card .btn-secondary {
+  display: inline-block;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .content-section {
+    margin: 40px auto;
+  }
+
+  .content-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .grievance-form,
+  .opportunity-card {
+    padding: 25px 20px;
+  }
+
+  .content-section ul li {
+    padding-left: 25px;
+  }
+}
