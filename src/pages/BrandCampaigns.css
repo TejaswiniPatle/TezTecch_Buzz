@@ -2,6 +2,9 @@
 
 .brand-campaigns-page {
   background: #fff;
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
 
 /* Hero Section */
@@ -35,6 +38,13 @@
   margin: 0 auto;
   position: relative;
   z-index: 1;
+  padding: 0 20px;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
 }
 
 .hero-badge {
@@ -79,8 +89,14 @@
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
-  display: inline-block;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   cursor: pointer;
+  line-height: 1.4;
+  text-align: center;
+  white-space: nowrap;
+  min-height: 56px;
 }
 
 .btn-primary {
@@ -98,24 +114,29 @@
   background: transparent;
   color: white;
   border: 2px solid white;
+  box-sizing: border-box;
 }
 
 .btn-secondary:hover {
   background: white;
   color: #00BFA5;
   transform: translateY(-3px);
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.3);
 }
 
 /* Stats Bar */
 .stats-bar {
-  background: white;
+  background: #ffffff;
   padding: 60px 20px;
-  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.12);
   margin-top: -40px;
   position: relative;
   z-index: 2;
+  border-top: 4px solid #00BFA5;
+  border-bottom: 1px solid #e0e0e0;
 }
 
+.stats-bar .container {
   max-width: 1100px;
   margin: 0 auto;
 }
@@ -123,13 +144,36 @@
 .stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 40px;
+  gap: 25px;
 }
 
 .stat-item {
   text-align: center;
-  padding: 20px;
-  border-right: 2px solid #f0f0f0;
+  padding: 30px 20px;
+  border-right: none;
+  transition: all 0.3s ease;
+  position: relative;
+  background: linear-gradient(135deg, #00BFA5 0%, #26A69A 100%);
+  border-radius: 16px;
+  box-shadow: 0 4px 15px rgba(0, 191, 165, 0.3);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.stat-item:hover {
+  transform: translateY(-8px);
+  box-shadow: 0 12px 30px rgba(0, 191, 165, 0.4);
+  background: linear-gradient(135deg, #00897B 0%, #00695C 100%);
+  border-color: #ffffff;
+}
+
+.stat-item:hover .stat-number {
+  color: #ffffff;
+  transform: scale(1.05);
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.stat-item:hover .stat-label {
+  color: #ffffff;
 }
 
 .stat-item:last-child {
@@ -138,41 +182,58 @@
 
 .stat-number {
   display: block;
-  font-size: 3rem;
+  font-size: 3.5rem;
   font-weight: 900;
-  color: #00BFA5;
-  margin-bottom: 10px;
+  color: #ffffff;
+  margin-bottom: 12px;
   line-height: 1;
+  transition: all 0.3s ease;
+  letter-spacing: -1px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
 }
 
 .stat-label {
-  font-size: 1rem;
-  color: #666;
-  font-weight: 500;
+  font-size: 1.05rem;
+  color: #ffffff;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  line-height: 1.4;
 }
 
 /* Why Partner Section */
 .why-partner-section {
   padding: 100px 20px;
-  background: linear-gradient(135deg, #F5F7FA 0%, #E8EBF0 100%);
+  background: linear-gradient(135deg, #00BFA5 0%, #26A69A 100%);
 }
 
 .section-header {
   text-align: center;
   margin-bottom: 60px;
+  max-width: 1000px;
+  margin-left: auto;
+  margin-right: auto;
+  padding: 0 20px;
 }
 
 .section-header h2 {
-  font-size: 2.8rem;
-  font-weight: 800;
-  color: #222;
-  margin: 0 0 15px;
+  font-size: 3.5rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 25px;
+  text-align: center;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  line-height: 1.2;
 }
 
 .section-header p {
-  font-size: 1.2rem;
-  color: #666;
-  margin: 0;
+  font-size: 1.4rem;
+  color: #ffffff;
+  margin: 0 auto;
+  text-align: center;
+  line-height: 1.6;
+  opacity: 1;
+  font-weight: 400;
+  max-width: 900px;
 }
 
 .benefits-grid {
@@ -190,6 +251,11 @@
   text-align: center;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  cursor: default;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
 }
 
 .benefit-card:hover {
@@ -243,6 +309,8 @@
   color: #666;
   cursor: pointer;
   transition: all 0.3s ease;
+  outline: none;
+  font-family: inherit;
 }
 
 .tab-btn:hover {
@@ -330,6 +398,8 @@
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
 }
 
 .service-cta:hover {
@@ -379,6 +449,7 @@
   overflow: hidden;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
   transition: all 0.3s ease;
+  cursor: pointer;
 }
 
 .case-study-card:hover {
@@ -543,6 +614,10 @@
   font-weight: 700;
   text-decoration: none;
   transition: all 0.3s ease;
+  cursor: pointer;
+  text-align: center;
+  border: none;
+  font-size: 1rem;
 }
 
 .package-btn:hover {
@@ -643,6 +718,12 @@
   gap: 20px;
   justify-content: center;
   flex-wrap: wrap;
+  align-items: center;
+}
+
+.cta-buttons .btn-primary,
+.cta-buttons .btn-secondary {
+  min-width: 200px;
 }
 
 /* Responsive Design */
@@ -721,6 +802,8 @@
   .btn-secondary {
     width: 100%;
     max-width: 300px;
+    padding: 16px 30px;
+    font-size: 1rem;
   }
 }
 
@@ -740,6 +823,9 @@
   .btn-primary,
   .btn-secondary {
     width: 100%;
+    padding: 15px 25px;
+    font-size: 0.95rem;
+    white-space: normal;
   }
 
   .services-tabs {
@@ -758,72 +844,24 @@
   .quote-icon {
     font-size: 3rem;
   }
-}
-  border-radius: 25px;
-  font-size: 15px;
-  font-weight: 600;
-  text-decoration: none;
-  transition: all 0.3s ease;
-}
 
-.btn-primary {
-  background: white;
-  color: #00BFA5;
-}
-
-.btn-primary:hover {
-  background: #f0f0f0;
-  transform: translateY(-2px);
-}
-
-.btn-outline {
-  background: transparent;
-  color: white;
-  border: 2px solid white;
-}
-
-.btn-outline:hover {
-  background: white;
-  color: #00BFA5;
-}
-
-/* Responsive */
-@media (max-width: 1024px) {
-  .campaigns-grid {
-    grid-template-columns: repeat(2, 1fr);
+  .testimonial-text {
+    font-size: 1rem;
   }
 
-  .services-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 768px) {
-  .campaigns-hero h1 {
-    font-size: 32px;
+  .section-header h2 {
+    font-size: 1.8rem;
   }
 
-  .stats-bar .stats-grid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: 20px;
+  .section-header p {
+    font-size: 1rem;
   }
 
-  .campaigns-grid {
-    grid-template-columns: 1fr;
+  .pricing-card {
+    padding: 35px 25px;
   }
 
-  .services-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .cta-buttons {
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .btn {
-    width: 100%;
-    max-width: 250px;
-    text-align: center;
+  .case-content h4 {
+    font-size: 1.2rem;
   }
 }

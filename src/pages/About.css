@@ -41,6 +41,10 @@
   text-align: center;
   color: white;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .hero-content h1 {
@@ -48,6 +52,8 @@
   font-weight: 800;
   margin: 0 0 20px;
   text-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  display: block;
+  width: 100%;
 }
 
 .hero-content p {
@@ -55,6 +61,8 @@
   font-weight: 400;
   margin: 0;
   opacity: 0.95;
+  display: block;
+  width: 100%;
 }
 
 /* Mission Section */
@@ -97,6 +105,8 @@
   line-height: 1.8;
   color: #555;
   margin-bottom: 20px;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .mission-image {
@@ -218,6 +228,8 @@
   line-height: 1.7;
   color: #666;
   margin: 0;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 /* Values Section */
@@ -228,7 +240,8 @@
 }
 
 .values-section .section-title {
-  color: white;
+  color: #ffffff !important;
+  text-shadow: none !important;
 }
 
 .values-grid {

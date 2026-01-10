@@ -4,7 +4,7 @@
 }
 
 .shorts-page .page-header {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #00BFA5 0%, #26A69A 100%);
   color: white;
   padding: 60px 0;
   text-align: center;
@@ -99,7 +99,7 @@
 }
 
 .shorts-page .short-card:hover .short-title {
-  color: #667eea;
+  color: #00BFA5;
 }
 
 @media (max-width: 1024px) {

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 import './Stories.css';
+import '../components/BackToHome.css';
 
 const API_URL = 'http://localhost:5000/api';
 
 const Stories = () => {
   const [searchParams] = useSearchParams();
   const categoryParam = searchParams.get('category');
+  const searchQuery = searchParams.get('search');
   
   const [stories, setStories] = useState([]);
   const [categories, setCategories] = useState([]);
@@ -154,13 +156,25 @@ const Stories = () => {
   const displayStories = stories.length > 0 ? stories : fallbackStories;
   const displayCategories = categories.length > 0 ? categories : fallbackCategories;
 
-  const activeCategoryName = activeCategory === 'all' 
-    ? 'All Stories' 
-    : displayCategories.find(cat => cat.slug === activeCategory)?.name || activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1).replace(/-/g, ' ');
+  const activeCategoryName = searchQuery 
+    ? `Search Results for "${searchQuery}"` 
+    : (activeCategory === 'all' 
+      ? 'All Stories' 
+      : displayCategories.find(cat => cat.slug === activeCategory)?.name || activeCategory.charAt(0).toUpperCase() + activeCategory.slice(1).replace(/-/g, ' '));
 
-  const filteredStories = activeCategory === 'all' 
+  let filteredStories = activeCategory === 'all' 
     ? displayStories 
     : displayStories.filter(story => story.categorySlug === activeCategory || story.category.toLowerCase() === activeCategory.toLowerCase());
+
+  // Apply search filter if search query exists
+  if (searchQuery) {
+    const lowerQuery = searchQuery.toLowerCase();
+    filteredStories = displayStories.filter(story => 
+      story.title.toLowerCase().includes(lowerQuery) || 
+      story.excerpt.toLowerCase().includes(lowerQuery) ||
+      story.category.toLowerCase().includes(lowerQuery)
+    );
+  }
 
   const paginatedStories = filteredStories.slice(0, visibleStories);
 
@@ -170,6 +184,12 @@ const Stories = () => {
 
   return (
     <div className="stories-page">
+      <Link to="/" className="back-to-home-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+      </Link>
       <div className="stories-header">
         <h1>{activeCategoryName}</h1>
         <p>Inspiring stories that make a difference across India</p>

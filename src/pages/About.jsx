@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './About.css';
+import '../components/BackToHome.css';
 
 const About = () => {
   const teamMembers = [
@@ -46,6 +47,12 @@ const About = () => {
 
   return (
     <div className="about-page">
+      <Link to="/" className="back-to-home-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+      </Link>
       {/* Hero Section */}
       <section className="about-hero">
         <div className="hero-overlay"></div>
@@ -140,7 +147,7 @@ const About = () => {
       {/* Our Values */}
       <section className="values-section">
         <div className="container">
-          <h2 className="section-title">Our Core Values</h2>
+          <h2 className="values-title" style={{ color: 'white', fontSize: '2.5rem', fontWeight: '700', textAlign: 'center', marginBottom: '60px' }}>Our Core Values</h2>
           <div className="values-grid">
             <div className="value-item">
               <div className="value-number">01</div>

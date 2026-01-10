@@ -1,14 +1,15 @@
 .header {
   background-color: #fff;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
   position: sticky;
   top: 0;
   z-index: 1000;
+  border-bottom: 1px solid #f0f0f0;
 }
 
 .header-main {
   background-color: #fff;
-  padding: 12px 0;
+  padding: 8px 0;
 }
 
 .header-content {
@@ -22,13 +23,13 @@
 .logo {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 12px;
   text-decoration: none;
 }
 
 .logo-icon {
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   flex-shrink: 0;
 }
 
@@ -40,38 +41,49 @@
 .logo-text {
   display: flex;
   flex-direction: column;
-  line-height: 1.2;
+  line-height: 1.1;
 }
 
 .logo-title {
-  font-size: 16px;
+  font-size: 20px;
   font-weight: 700;
   color: #00BFA5;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
 }
 
 .logo-subtitle {
   font-size: 16px;
   font-weight: 700;
   color: #00BFA5;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.8px;
+}
+
+.logo-tagline {
+  font-size: 10px;
+  font-weight: 500;
+  color: #666;
+  letter-spacing: 0.3px;
+  margin-top: 2px;
+  line-height: 1.1;
 }
 
 /* Main Navigation */
 .main-nav {
   display: flex;
-  gap: 35px;
+  gap: 28px;
   align-items: center;
 }
 
 .main-nav a {
-  color: #4a4a4a;
+  color: #555;
   font-size: 14px;
   font-weight: 600;
   text-decoration: none;
   text-transform: uppercase;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
   transition: color 0.3s ease;
+  position: relative;
+  white-space: nowrap;
 }
 
 .main-nav a:hover {
@@ -82,16 +94,19 @@
 .header-actions {
   display: flex;
   align-items: center;
-  gap: 15px;
+  gap: 12px;
 }
 
 .search-box {
   position: relative;
+  display: flex;
+  align-items: center;
+  gap: 0;
 }
 
 .search-box input {
-  width: 220px;
-  padding: 10px 15px;
+  width: 200px;
+  padding: 8px 36px 8px 12px;
   border: 1px solid #e0e0e0;
   border-radius: 4px;
   font-size: 14px;
@@ -107,17 +122,33 @@
   color: #999;
 }
 
+.search-btn {
+  position: absolute;
+  right: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 5px 10px;
+  font-size: 16px;
+  transition: transform 0.2s ease;
+}
+
+.search-btn:hover {
+  transform: scale(1.1);
+}
+
 .subscribe-btn {
   background-color: #00BFA5;
   color: white;
-  padding: 10px 25px;
+  padding: 8px 20px;
   border-radius: 4px;
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 700;
   letter-spacing: 0.5px;
   transition: background-color 0.3s ease;
   cursor: pointer;
   border: none;
+  white-space: nowrap;
 }
 
 .subscribe-btn:hover {

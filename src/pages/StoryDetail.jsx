@@ -1,12 +1,343 @@
 import React from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './StoryDetail.css';
+import '../components/BackToHome.css';
 
 const StoryDetail = () => {
   const { slug } = useParams();
 
-  // Story database
-  const stories = {
+  // Function to generate story content based on slug
+  const generateStoryContent = (slug) => {
+    // Extract category and topic from slug
+    const parts = slug.split('-');
+    
+    // Define category to readable name mapping with multi-word categories
+    const categoryMap = {
+      'sustainability': { name: 'Sustainability', words: 1 },
+      'startup': { name: 'Startup', words: 1 },
+      'travel': { name: 'Travel', words: 1 },
+      'farming': { name: 'Farming', words: 1 },
+      'education': { name: 'Education', words: 1 },
+      'culture': { name: 'Culture', words: 1 },
+      'health': { name: 'Health', words: 1 },
+      'technology': { name: 'Technology', words: 1 },
+      'environment': { name: 'Environment', words: 1 },
+      'innovation': { name: 'Innovation', words: 1 },
+      'social': { name: 'Social Impact', words: 2 },
+      'women': { name: 'Women Power', words: 2 },
+      'food': { name: 'Food', words: 1 },
+      'sports': { name: 'Sports', words: 1 },
+      'art': { name: 'Art', words: 1 },
+      'music': { name: 'Music', words: 1 },
+      'wildlife': { name: 'Wildlife', words: 1 },
+      'science': { name: 'Science', words: 1 },
+      'architecture': { name: 'Architecture', words: 1 },
+      'heritage': { name: 'Heritage', words: 1 },
+      'handicraft': { name: 'Handicraft', words: 1 },
+      'fashion': { name: 'Fashion', words: 1 },
+      'photography': { name: 'Photography', words: 1 },
+      'literature': { name: 'Literature', words: 1 },
+      'community': { name: 'Community', words: 1 },
+      'youth': { name: 'Youth', words: 1 },
+      'elderly': { name: 'Elderly Care', words: 2 },
+      'animal': { name: 'Animal Welfare', words: 2 },
+      'wellness': { name: 'Wellness', words: 1 },
+      'adventure': { name: 'Adventure', words: 1 }
+    };
+
+    // Detect category and extract topic
+    let category = 'General';
+    let topicParts = parts;
+    
+    // Check for single-word categories
+    if (categoryMap[parts[0]]) {
+      const catData = categoryMap[parts[0]];
+      category = catData.name;
+      topicParts = parts.slice(catData.words);
+    } 
+    // Check for two-word categories
+    else if (parts.length >= 2) {
+      const twoWordKey = parts[0];
+      if (categoryMap[twoWordKey] && categoryMap[twoWordKey].words === 2) {
+        category = categoryMap[twoWordKey].name;
+        topicParts = parts.slice(2);
+      }
+    }
+    
+    const topic = topicParts.map(word => word.charAt(0).toUpperCase() + word.slice(1)).join(' ');
+    const title = `${topic}: An Inspiring Story from India`;
+
+    // Generate dynamic, engaging content based on category
+    const content = [
+      {
+        type: "paragraph",
+        text: `In the heart of India, where tradition meets innovation, the story of ${topic.toLowerCase()} stands as a testament to the transformative power of human determination. This is not just another success story—it's a movement that's reshaping communities, inspiring thousands, and proving that sustainable change is possible when passion meets purpose.`
+      },
+      {
+        type: "heading",
+        text: "The Genesis of Change"
+      },
+      {
+        type: "paragraph",
+        text: `The journey began in 2020, when a small group of passionate changemakers identified ${topic.toLowerCase()} as a critical solution to challenges facing their community. What started as weekly meetings in a modest community center has evolved into a full-fledged initiative touching thousands of lives across multiple states.`
+      },
+      {
+        type: "paragraph",
+        text: `"We were just ordinary people who refused to accept the status quo," recalls Rajesh Kumar, one of the founding members. "We saw a problem, envisioned a solution, and decided to act. ${topic} became our vehicle for creating the change we wanted to see."`
+      },
+      {
+        type: "quote",
+        text: `We never imagined our humble beginning would spark a movement. But when you work with genuine care for your community and refuse to give up, extraordinary things happen.`,
+        author: "Priya Sharma, Co-founder"
+      },
+      {
+        type: "heading",
+        text: "Measurable Impact That Matters"
+      },
+      {
+        type: "paragraph",
+        text: `The numbers tell a compelling story, but they only scratch the surface of the real human impact:`
+      },
+      {
+        type: "list",
+        items: [
+          "Over 15,000 individuals directly benefited across rural and urban areas",
+          "Created 500+ sustainable livelihood opportunities for local communities",
+          "Reduced environmental footprint by 40% through innovative, eco-friendly practices",
+          "Inspired similar initiatives in 22 states across India",
+          "Secured partnerships with government bodies, NGOs, and corporate sponsors",
+          "Trained 300+ community leaders who now run independent programs",
+          "Achieved 85% success rate in meeting project goals and objectives"
+        ]
+      },
+      {
+        type: "paragraph",
+        text: `But statistics alone don't capture the essence of transformation. Consider Meera Devi, a 45-year-old mother of three from a small village in Uttar Pradesh. Through ${topic.toLowerCase()}, she not only gained new skills but became a trainer herself, now empowering other women in her community. "This changed my entire family's future," she shares with tears of joy.`
+      },
+      {
+        type: "heading",
+        text: "Navigating the Challenges"
+      },
+      {
+        type: "paragraph",
+        text: `Every transformative journey faces obstacles, and this was no exception. The early days were marked by skepticism from traditionalists, limited financial resources, bureaucratic hurdles, and the challenge of changing deeply ingrained mindsets. Many questioned whether ${topic.toLowerCase()} could truly make a difference.`
+      },
+      {
+        type: "paragraph",
+        text: `"The first six months were the hardest," admits Arun Patel, the project coordinator. "We faced rejection, ran out of funds twice, and at one point, our team was down to just five committed individuals. But we believed in our mission."`
+      },
+      {
+        type: "paragraph",
+        text: `The breakthrough came when they shifted their approach from top-down implementation to community-driven participation. By involving local residents in every decision, demonstrating quick wins, and remaining flexible in their methods, they built the trust necessary for sustainable change.`
+      },
+      {
+        type: "heading",
+        text: "The Power of Community"
+      },
+      {
+        type: "paragraph",
+        text: `What distinguishes this initiative is its unwavering commitment to community ownership. Local residents aren't mere beneficiaries—they're co-creators, decision-makers, and ambassadors of change. This participatory approach has been crucial to the project's success and sustainability.`
+      },
+      {
+        type: "paragraph",
+        text: `Weekly community meetings, monthly skill-building workshops, and regular feedback sessions ensure every voice is heard. Youth brigades, women's collectives, and elder councils all play vital roles. The initiative has become a living example of grassroots democracy in action.`
+      },
+      {
+        type: "quote",
+        text: `This isn't their project for us—it's our project for our future. We own it, we shape it, and we're committed to making it succeed.`,
+        author: "Vikram Singh, Community Member"
+      },
+      {
+        type: "heading",
+        text: "Building for Sustainability"
+      },
+      {
+        type: "paragraph",
+        text: `From day one, sustainability—economic, environmental, and social—has been the cornerstone. The focus isn't on creating dependency but on building lasting capacity. ${topic} serves as a catalyst, not a crutch.`
+      },
+      {
+        type: "list",
+        items: [
+          "Comprehensive training programs ensuring skills transfer to new generations",
+          "Income-generating models that make initiatives financially self-sufficient",
+          "Strategic partnerships with local businesses creating mutual value",
+          "Open-source documentation enabling replication in other communities",
+          "Environmental impact assessments integrated into all activities",
+          "Youth mentorship programs securing long-term leadership pipeline",
+          "Digital platforms for knowledge sharing and continuous learning"
+        ]
+      },
+      {
+        type: "paragraph",
+        text: `The initiative now generates 70% of its operational costs through community enterprises, grants, and social impact investments. The goal is 100% financial independence by 2027.`
+      },
+      {
+        type: "heading",
+        text: "Recognition and Growth"
+      },
+      {
+        type: "paragraph",
+        text: `Success has brought well-deserved recognition. The initiative has received the National Social Impact Award, been featured in leading media outlets, and attracted visits from policy makers and researchers. But the team remains grounded.`
+      },
+      {
+        type: "paragraph",
+        text: `"Awards are nice, but our real achievement is the smile on a child's face when their parent comes home with dignity and income," says Sunita Reddy, the communications lead. "That's what drives us."`
+      },
+      {
+        type: "paragraph",
+        text: `The expansion roadmap is ambitious yet achievable: reaching 50 districts by 2026, launching an online academy for skills training, creating a national network of practitioners, developing a mobile app for real-time impact tracking, and establishing regional resource centers.`
+      },
+      {
+        type: "heading",
+        text: "Vision for Tomorrow"
+      },
+      {
+        type: "paragraph",
+        text: `The vision extends far beyond current boundaries. The team is developing a replicable blueprint that any community can adapt, regardless of their specific context or resources. ${topic} is becoming a model for participatory development.`
+      },
+      {
+        type: "paragraph",
+        text: `Technology integration is accelerating. A mobile app in development will enable knowledge sharing, real-time collaboration, and impact measurement. AI-powered tools will help optimize strategies based on data insights. Virtual reality experiences will showcase success stories to inspire others.`
+      },
+      {
+        type: "paragraph",
+        text: `International interest is growing too. Delegations from Southeast Asia and Africa have visited to learn and adapt the model. "Our dream is to see variations of this work creating impact globally," shares the team.`
+      },
+      {
+        type: "heading",
+        text: "Join the Movement"
+      },
+      {
+        type: "paragraph",
+        text: `This movement thrives on collective action. Whether you're an individual, organization, or institution, there are numerous ways to contribute:`
+      },
+      {
+        type: "list",
+        items: [
+          "Volunteer your professional skills (teaching, marketing, tech, finance, etc.)",
+          "Become a community ambassador spreading awareness in your network",
+          "Provide financial support through one-time or monthly contributions",
+          "Partner with your organization for CSR initiatives or skill-sharing programs",
+          "Mentor young changemakers and share your expertise",
+          "Start a similar initiative in your community using our open-source resources",
+          "Join our online community to share ideas and best practices",
+          "Advocate for supportive policies with local government"
+        ]
+      },
+      {
+        type: "paragraph",
+        text: `Visit the initiative's website to learn more, sign up for newsletters, or schedule a visit. Every contribution, no matter how small, creates ripples of positive change.`
+      },
+      {
+        type: "heading",
+        text: "A Testament to Hope"
+      },
+      {
+        type: "paragraph",
+        text: `The story of ${topic.toLowerCase()} is ultimately about hope—hope that ordinary people can create extraordinary impact, that communities can solve their own problems when empowered, that sustainable development isn't just a buzzword but an achievable reality, and that India's future is being built by thousands of such grassroots initiatives.`
+      },
+      {
+        type: "paragraph",
+        text: `As you read this, somewhere in India, a new volunteer is joining the cause, a community is experiencing transformation, a child is dreaming bigger because of newfound opportunities, and the ripple effects of positive change continue to spread.`
+      },
+      {
+        type: "quote",
+        text: `Every great movement begins with a small group of committed individuals. ${topic} proves that with dedication, collaboration, and unwavering belief in your mission, anything is possible. The question isn't whether change can happen—it's whether you'll be part of making it happen.`,
+        author: "Dr. Anita Desai, Impact Advisor"
+      },
+      {
+        type: "paragraph",
+        text: `This is more than a success story. It's an invitation. An invitation to believe in possibility, to act on your convictions, and to join a growing movement of changemakers transforming India one community at a time. The future is being written right now, and there's a pen waiting for you.`
+      }
+    ];
+
+    const authors = ["Priya Sharma", "Anita Desai", "Rajesh Kumar", "Meera Iyer", "Vikram Singh", "Sunita Reddy", "Arun Patel", "Divya Menon", "Ravi Patel", "Kavita Nair"];
+    
+    // Category-specific images for better visual appeal
+    const categoryImages = {
+      'Sustainability': [
+        'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200',
+        'https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1200',
+        'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200'
+      ],
+      'Startup': [
+        'https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200',
+        'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1200',
+        'https://images.unsplash.com/photo-1553028826-f4804a6dba3b?w=1200'
+      ],
+      'Travel': [
+        'https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=1200',
+        'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=1200',
+        'https://images.unsplash.com/photo-1469854523086-cc02fe5d8800?w=1200'
+      ],
+      'Farming': [
+        'https://images.unsplash.com/photo-1625246333195-78d9c38ad649?w=1200',
+        'https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200',
+        'https://images.unsplash.com/photo-1574943320219-553eb213f72d?w=1200'
+      ],
+      'Education': [
+        'https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=1200',
+        'https://images.unsplash.com/photo-1509062522246-3755977927d7?w=1200',
+        'https://images.unsplash.com/photo-1427504494785-3a9ca7044f45?w=1200'
+      ],
+      'Technology': [
+        'https://images.unsplash.com/photo-1518770660439-4636190af475?w=1200',
+        'https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=1200',
+        'https://images.unsplash.com/photo-1488590528505-98d2b5aba04b?w=1200'
+      ],
+      'Health': [
+        'https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=1200',
+        'https://images.unsplash.com/photo-1505751172876-fa1923c5c528?w=1200',
+        'https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=1200'
+      ],
+      'Environment': [
+        'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1200',
+        'https://images.unsplash.com/photo-1466611653911-95081537e5b7?w=1200',
+        'https://images.unsplash.com/photo-1511497584788-876760111969?w=1200'
+      ],
+      'Women Power': [
+        'https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=1200',
+        'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=1200',
+        'https://images.unsplash.com/photo-1487412720507-e7ab37603c6f?w=1200'
+      ],
+      'Handicraft': [
+        'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1200',
+        'https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=1200',
+        'https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=1200'
+      ],
+      'Wildlife': [
+        'https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=1200',
+        'https://images.unsplash.com/photo-1549366021-9f761d450615?w=1200',
+        'https://images.unsplash.com/photo-1535338454770-5497d3bf7733?w=1200'
+      ],
+      'Default': [
+        'https://images.unsplash.com/photo-1544735716-392fe2489ffa?w=1200',
+        'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?w=1200',
+        'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=1200',
+        'https://images.unsplash.com/photo-1481627834876-b7833e8f5470?w=1200',
+        'https://images.unsplash.com/photo-1535957998253-26ae1ef29506?w=1200'
+      ]
+    };
+
+    // Get images for the category or use default
+    const availableImages = categoryImages[category] || categoryImages['Default'];
+    const selectedImage = availableImages[Math.floor(Math.random() * availableImages.length)];
+
+    return {
+      title,
+      category,
+      author: authors[Math.floor(Math.random() * authors.length)],
+      date: "December 20, 2025",
+      readTime: `${8 + Math.floor(Math.random() * 5)} min read`,
+      image: selectedImage,
+      content,
+      tags: [category, topic, "Social Impact", "Community", "India", "Changemakers"],
+      relatedStories: []
+    };
+  };
+
+  // Hardcoded featured stories (original content)
+  const featuredStories = {
     'tree-planting-legacy': {
       title: "This 73-YO Man Plants 10,000 Trees Every Year to Honor His Late Parents",
       category: "Sustainability",
@@ -1528,18 +1859,8 @@ const StoryDetail = () => {
     }
   };
 
-  const story = stories[slug];
-
-  if (!story) {
-    return (
-      <div className="story-detail">
-        <div className="container">
-          <h1>Story not found</h1>
-          <Link to="/" className="back-btn">← Back to Home</Link>
-        </div>
-      </div>
-    );
-  }
+  // First check if it's a featured story, otherwise generate content
+  const story = featuredStories[slug] || generateStoryContent(slug);
 
   const renderContent = (item, index) => {
     switch (item.type) {
@@ -1573,12 +1894,19 @@ const StoryDetail = () => {
     <div className="story-detail">
       <div className="story-header">
         <div className="container">
-          <Link to="/" className="back-link">← Back to Home</Link>
+          <Link to="/" className="back-to-home-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Back to Home
+          </Link>
           <span className="story-category-badge">{story.category}</span>
           <h1 className="story-title">{story.title}</h1>
           <div className="story-meta">
             <span className="author">By {story.author}</span>
+            <span>•</span>
             <span className="date">{story.date}</span>
+            <span>•</span>
             <span className="read-time">{story.readTime}</span>
           </div>
         </div>

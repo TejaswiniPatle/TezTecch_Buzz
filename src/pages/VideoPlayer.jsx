@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './VideoPlayer.css';
+import '../components/BackToHome.css';
 
 const VideoPlayer = () => {
   const { slug } = useParams();
@@ -90,6 +91,12 @@ const VideoPlayer = () => {
 
   return (
     <div className="video-player-page">
+      <Link to="/" className="back-to-home-btn">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Home
+      </Link>
       <div className="container">
         <div className="breadcrumb">
           <Link to="/">Home</Link>

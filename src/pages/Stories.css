@@ -17,7 +17,7 @@
 }
 
 .stories-header p {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   max-width: 700px;
   margin: 0 auto;
   opacity: 0.95;
@@ -59,7 +59,7 @@
   border: 2px solid transparent;
   padding: 14px 20px;
   border-radius: 12px;
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   font-weight: 500;
   color: #555;
   cursor: pointer;
@@ -131,14 +131,14 @@
   color: white;
   padding: 6px 14px;
   border-radius: 20px;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   font-weight: 600;
   margin-bottom: 15px;
   width: fit-content;
 }
 
 .story-card-title {
-  font-size: 1.4rem;
+  font-size: 1.65rem;
   font-weight: 600;
   color: #222;
   margin: 0 0 12px;
@@ -147,11 +147,13 @@
 }
 
 .story-card-excerpt {
-  font-size: 0.95rem;
+  font-size: 1.15rem;
   color: #666;
   line-height: 1.6;
   margin: 0 0 20px;
   flex: 1;
+  text-align: justify;
+  text-justify: inter-word;
 }
 
 .story-card-meta {
@@ -160,7 +162,7 @@
   align-items: center;
   padding-top: 20px;
   border-top: 1px solid #eee;
-  font-size: 0.85rem;
+  font-size: 1.05rem;
   color: #888;
 }
 
@@ -183,7 +185,7 @@
   padding: 16px 48px;
   border: none;
   border-radius: 50px;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.3s ease;

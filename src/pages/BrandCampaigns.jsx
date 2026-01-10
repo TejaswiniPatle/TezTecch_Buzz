@@ -177,11 +177,29 @@ const BrandCampaigns = () => {
       </section>
 
       {/* Why Partner Section */}
-      <section className="why-partner-section">
+      <section className="why-partner-section" style={{ background: 'linear-gradient(135deg, #00BFA5 0%, #26A69A 100%)', padding: '100px 20px' }}>
         <div className="container">
-          <div className="section-header">
-            <h2>Why Partner With TezTecch Buzz?</h2>
-            <p>We connect purpose-driven brands with audiences that care</p>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ 
+              color: '#ffffff', 
+              fontWeight: '900', 
+              fontSize: '3.5rem', 
+              textAlign: 'center', 
+              marginBottom: '25px',
+              lineHeight: '1.2'
+            }}>
+              Why Partner With TezTecch Buzz?
+            </h2>
+            <p style={{ 
+              color: '#ffffff', 
+              fontSize: '1.4rem', 
+              textAlign: 'center',
+              lineHeight: '1.6',
+              maxWidth: '800px',
+              margin: '0 auto'
+            }}>
+              We connect purpose-driven brands with audiences that care
+            </p>
           </div>
           <div className="benefits-grid">
             <div className="benefit-card">
@@ -211,9 +229,9 @@ const BrandCampaigns = () => {
       {/* Services Section */}
       <section className="services-section">
         <div className="container">
-          <div className="section-header">
-            <h2>Our Services</h2>
-            <p>Comprehensive solutions for your brand storytelling needs</p>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#00BFA5', margin: '0 0 15px', textAlign: 'center' }}>Our Services</h2>
+            <p style={{ fontSize: '1.2rem', color: '#666', margin: '0', textAlign: 'center' }}>Comprehensive solutions for your brand storytelling needs</p>
           </div>
           <div className="services-tabs">
             {services.map((service) => (
@@ -256,9 +274,9 @@ const BrandCampaigns = () => {
       {/* Case Studies */}
       <section className="case-studies-section">
         <div className="container">
-          <div className="section-header">
-            <h2>Success Stories</h2>
-            <p>See how we've helped brands create impact</p>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#00BFA5', margin: '0 0 15px', textAlign: 'center' }}>Success Stories</h2>
+            <p style={{ fontSize: '1.2rem', color: '#666', margin: '0', textAlign: 'center' }}>See how we've helped brands create impact</p>
           </div>
           <div className="case-studies-grid">
             {caseStudies.map((study, index) => (
@@ -283,9 +301,9 @@ const BrandCampaigns = () => {
       {/* Pricing Packages */}
       <section className="pricing-section" id="packages">
         <div className="container">
-          <div className="section-header">
-            <h2>Choose Your Package</h2>
-            <p>Flexible pricing to match your brand's needs</p>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#00BFA5', margin: '0 0 15px', textAlign: 'center' }}>Choose Your Package</h2>
+            <p style={{ fontSize: '1.2rem', color: '#666', margin: '0', textAlign: 'center' }}>Flexible pricing to match your brand's needs</p>
           </div>
           <div className="pricing-grid">
             {packages.map((pkg, index) => (
@@ -316,8 +334,8 @@ const BrandCampaigns = () => {
       {/* Testimonials */}
       <section className="testimonials-section">
         <div className="container">
-          <div className="section-header">
-            <h2>What Our Partners Say</h2>
+          <div style={{ textAlign: 'center', marginBottom: '60px' }}>
+            <h2 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#00BFA5', margin: '0', textAlign: 'center' }}>What Our Partners Say</h2>
           </div>
           <div className="testimonials-grid">
             {testimonials.map((testimonial, index) => (

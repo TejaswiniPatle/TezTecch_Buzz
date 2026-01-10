@@ -1,17 +1,38 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { subscribeNewsletter } from '../utils/api';
 import './Footer.css';
 
 const Footer = () => {
   const [email, setEmail] = useState('');
   const [name, setName] = useState('');
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState({ type: '', text: '' });
 
-  const handleSubscribe = (e) => {
+  const handleSubscribe = async (e) => {
     e.preventDefault();
-    // Handle subscription logic here
-    console.log('Subscribe:', { name, email });
-    setName('');
-    setEmail('');
+    setLoading(true);
+    setMessage({ type: '', text: '' });
+
+    try {
+      const data = await subscribeNewsletter(name, email);
+      setMessage({ type: 'success', text: data.message });
+      setName('');
+      setEmail('');
+      
+      // Clear success message after 5 seconds
+      setTimeout(() => {
+        setMessage({ type: '', text: '' });
+      }, 5000);
+    } catch (error) {
+      console.error('Subscription error:', error);
+      setMessage({ 
+        type: 'error', 
+        text: error.message || 'Unable to connect to server. Please try again later.' 
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -22,10 +43,10 @@ const Footer = () => {
             <h3>STORIES</h3>
             <ul>
               <li><Link to="/sustainability">Sustainability</Link></li>
-              <li><Link to="/stories">Startup</Link></li>
-              <li><Link to="/stories">Travel</Link></li>
-              <li><Link to="/stories">Farming</Link></li>
-              <li><Link to="/stories">Education</Link></li>
+              <li><Link to="/stories?category=startup">Startup</Link></li>
+              <li><Link to="/stories?category=travel">Travel</Link></li>
+              <li><Link to="/stories?category=farming">Farming</Link></li>
+              <li><Link to="/stories?category=education">Education</Link></li>
             </ul>
           </div>
           
@@ -48,11 +69,11 @@ const Footer = () => {
               <p className="contact-label">SEND FEEDBACK:</p>
               <a href="https://www.teztecchbuzz.in" className="contact-link" target="_blank" rel="noopener noreferrer">www.teztecchbuzz.in</a>
               <div className="social-icons">
-                <a href="#" aria-label="Facebook"><i className="fab fa-facebook"></i></a>
-                <a href="#" aria-label="Instagram"><i className="fab fa-instagram"></i></a>
-                <a href="#" aria-label="YouTube"><i className="fab fa-youtube"></i></a>
-                <a href="#" aria-label="LinkedIn"><i className="fab fa-linkedin"></i></a>
-                <a href="#" aria-label="Twitter"><i className="fab fa-twitter"></i></a>
+                <a href="https://www.facebook.com/teztecchbuzz" aria-label="Facebook" target="_blank" rel="noopener noreferrer"><i className="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/teztecchbuzz" aria-label="Instagram" target="_blank" rel="noopener noreferrer"><i className="fab fa-instagram"></i></a>
+                <a href="https://www.youtube.com/@teztecchbuzz" aria-label="YouTube" target="_blank" rel="noopener noreferrer"><i className="fab fa-youtube"></i></a>
+                <a href="https://www.linkedin.com/company/teztecchbuzz" aria-label="LinkedIn" target="_blank" rel="noopener noreferrer"><i className="fab fa-linkedin"></i></a>
+                <a href="https://twitter.com/teztecchbuzz" aria-label="Twitter" target="_blank" rel="noopener noreferrer"><i className="fab fa-twitter"></i></a>
               </div>
             </div>
           </div>
@@ -67,6 +88,7 @@ const Footer = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
+                disabled={loading}
               />
               <input 
                 type="email" 
@@ -74,8 +96,16 @@ const Footer = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
+                disabled={loading}
               />
-              <button type="submit">SUBSCRIBE</button>
+              <button type="submit" disabled={loading}>
+                {loading ? 'SUBSCRIBING...' : 'SUBSCRIBE'}
+              </button>
+              {message.text && (
+                <div className={`subscribe-message ${message.type}`}>
+                  {message.text}
+                </div>
+              )}
             </form>
           </div>
         </div>

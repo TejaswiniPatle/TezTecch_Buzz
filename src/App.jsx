@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import ErrorBoundary from './components/ErrorBoundary';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -30,13 +31,14 @@ import './App.css';
 
 function App() {
   return (
-    <Router>
-      <ScrollToTop />
-      <div className="App">
-        <Header />
-        <main className="main-content">
-          <Routes>
-            <Route path="/" element={<Home />} />
+    <ErrorBoundary>
+      <Router>
+        <ScrollToTop />
+        <div className="App">
+          <Header />
+          <main className="main-content">
+            <Routes>
+              <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/stories" element={<Stories />} />
             <Route path="/categories" element={<Categories />} />
@@ -64,6 +66,7 @@ function App() {
         <Footer />
       </div>
     </Router>
+    </ErrorBoundary>
   );
 }
 

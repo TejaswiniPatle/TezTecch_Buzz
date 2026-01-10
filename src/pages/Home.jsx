@@ -279,7 +279,7 @@ const Home = () => {
       {/* Categories Section */}
       <section className="categories-section">
         <div className="container">
-          <h2 className="section-title">Explore by Category</h2>
+          <h2 className="section-title" style={{ color: '#00BFA5', textAlign: 'center' }}>Explore by Category</h2>
           <div className="categories-grid">
             {displayedCategories.map((category) => (
               <Link to={`/stories?category=${category.slug}`} key={category.name} className="category-card">
@@ -414,6 +414,7 @@ const Home = () => {
       {/* Statistics Section */}
       <section className="stats-section">
         <div className="container">
+          <h2 className="section-title stats-title">Impact by Numbers</h2>
           <div className="stats-grid">
             <div className="stat-card">
               <div className="stat-number">500+</div>

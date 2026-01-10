@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import './Header.css';
 
 const Header = () => {
@@ -8,6 +8,8 @@ const Header = () => {
   const [showSubscribeModal, setShowSubscribeModal] = useState(false);
   const [subscribeEmail, setSubscribeEmail] = useState('');
   const [subscribeMessage, setSubscribeMessage] = useState('');
+  const [searchQuery, setSearchQuery] = useState('');
+  const navigate = useNavigate();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -15,6 +17,14 @@ const Header = () => {
 
   const toggleTopics = () => {
     setTopicsOpen(!topicsOpen);
+  };
+
+  const handleSearchSubmit = (e) => {
+    e.preventDefault();
+    if (searchQuery.trim()) {
+      navigate(`/stories?search=${encodeURIComponent(searchQuery.trim())}`);
+      setSearchQuery('');
+    }
   };
 
   const handleSubscribeClick = () => {
@@ -51,6 +61,7 @@ const Header = () => {
               <div className="logo-text">
                 <span className="logo-title">TEZTECCH</span>
                 <span className="logo-subtitle">BUZZ</span>
+                <span className="logo-tagline">Creating Positive Change Through Stories</span>
               </div>
             </Link>
             
@@ -62,9 +73,17 @@ const Header = () => {
             </nav>
 
             <div className="header-actions">
-              <div className="search-box">
-                <input type="text" placeholder="Search stories..." />
-              </div>
+              <form className="search-box" onSubmit={handleSearchSubmit}>
+                <input 
+                  type="text" 
+                  placeholder="Search stories..." 
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                />
+                <button type="submit" className="search-btn" aria-label="Search">
+                  🔍
+                </button>
+              </form>
               <button className="subscribe-btn" onClick={handleSubscribeClick}>SUBSCRIBE</button>
               <button className="menu-toggle" onClick={toggleMenu}>
                 {menuOpen ? '✕' : '☰'}
