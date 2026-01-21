@@ -1,12 +1,91 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import './StoryDetail.css';
 import '../components/BackToHome.css';
 
+const API_URL = 'http://localhost:5000/api';
+
 const StoryDetail = () => {
   const { slug } = useParams();
+  const [story, setStory] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Function to generate story content based on slug
+  useEffect(() => {
+    fetchStory();
+  }, [slug]);
+
+  const fetchStory = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(`${API_URL}/public/stories/${slug}`);
+      const data = await response.json();
+      
+      if (data.success && data.data) {
+        // Map backend data to frontend structure
+        const mappedStory = {
+          title: data.data.title,
+          slug: data.data.slug,
+          image: data.data.imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200',
+          category: data.data.category.charAt(0).toUpperCase() + data.data.category.slice(1),
+          author: data.data.author,
+          date: new Date(data.data.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          readTime: `${data.data.readTime || 5} min read`,
+          content: parseContent(data.data.content),
+          tags: data.data.tags || [],
+          views: data.data.views || 0
+        };
+        setStory(mappedStory);
+      } else {
+        setError('Story not found');
+      }
+    } catch (err) {
+      console.error('Error fetching story:', err);
+      setError('Failed to load story');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const parseContent = (content) => {
+    // Split content into paragraphs and detect headings
+    if (!content) return [];
+    
+    const lines = content.split('\n').filter(l => l.trim());
+    const parsed = [];
+    
+    lines.forEach(line => {
+      const trimmed = line.trim();
+      
+      // Check if line is a heading (short line, no punctuation at end, starts with capital)
+      if (trimmed.length < 60 && 
+          !trimmed.endsWith('.') && 
+          !trimmed.endsWith(',') && 
+          !trimmed.endsWith(':') &&
+          trimmed[0] === trimmed[0].toUpperCase() &&
+          !trimmed.startsWith('-') &&
+          !trimmed.match(/^\d+\./) &&
+          trimmed.split(' ').length <= 8) {
+        parsed.push({
+          type: 'heading',
+          text: trimmed
+        });
+      } 
+      // Convert list items to paragraphs
+      else if (trimmed.length > 0) {
+        // Remove bullet points or numbers from the start
+        let text = trimmed.replace(/^[-•]\s*/, '').replace(/^\d+\.\s*/, '');
+        parsed.push({
+          type: 'paragraph',
+          text: text
+        });
+      }
+    });
+    
+    return parsed;
+  };
+
+  // Function to generate story content based on slug (fallback)
   const generateStoryContent = (slug) => {
     // Extract category and topic from slug
     const parts = slug.split('-');
@@ -1859,8 +1938,8 @@ const StoryDetail = () => {
     }
   };
 
-  // First check if it's a featured story, otherwise generate content
-  const story = featuredStories[slug] || generateStoryContent(slug);
+  // First try to use fetched story, otherwise generate fallback content
+  const displayStory = story || (featuredStories[slug] || generateStoryContent(slug));
 
   const renderContent = (item, index) => {
     switch (item.type) {
@@ -1873,7 +1952,7 @@ const StoryDetail = () => {
       case 'list':
         return (
           <ul key={index} className="content-list">
-            {item.items.map((listItem, i) => (
+            {item.items && item.items.map((listItem, i) => (
               <li key={i}>{listItem}</li>
             ))}
           </ul>
@@ -1890,6 +1969,47 @@ const StoryDetail = () => {
     }
   };
 
+  if (loading) {
+    return (
+      <div className="story-detail">
+        <div className="story-header">
+          <div className="container">
+            <Link to="/" className="back-to-home-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back to Home
+            </Link>
+            <div style={{textAlign: 'center', padding: '50px'}}>
+              <h2>Loading story...</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="story-detail">
+        <div className="story-header">
+          <div className="container">
+            <Link to="/" className="back-to-home-btn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+              </svg>
+              Back to Home
+            </Link>
+            <div style={{textAlign: 'center', padding: '50px'}}>
+              <h2>{error}</h2>
+              <p>The story you're looking for doesn't exist.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="story-detail">
       <div className="story-header">
@@ -1900,36 +2020,38 @@ const StoryDetail = () => {
             </svg>
             Back to Home
           </Link>
-          <span className="story-category-badge">{story.category}</span>
-          <h1 className="story-title">{story.title}</h1>
+          <span className="story-category-badge">{displayStory.category}</span>
+          <h1 className="story-title">{displayStory.title}</h1>
           <div className="story-meta">
-            <span className="author">By {story.author}</span>
+            <span className="author">By {displayStory.author}</span>
             <span>•</span>
-            <span className="date">{story.date}</span>
+            <span className="date">{displayStory.date}</span>
             <span>•</span>
-            <span className="read-time">{story.readTime}</span>
+            <span className="read-time">{displayStory.readTime}</span>
           </div>
         </div>
       </div>
 
       <div className="story-featured-image">
-        <img src={story.image} alt={story.title} />
+        <img src={displayStory.image} alt={displayStory.title} />
       </div>
 
       <div className="story-content">
         <div className="container">
           <article className="content-article">
-            {story.content.map((item, index) => renderContent(item, index))}
+            {displayStory.content && displayStory.content.map((item, index) => renderContent(item, index))}
           </article>
 
-          <div className="story-tags">
-            <h3>Tags:</h3>
-            <div className="tags-list">
-              {story.tags.map((tag, index) => (
-                <span key={index} className="tag">{tag}</span>
-              ))}
+          {displayStory.tags && displayStory.tags.length > 0 && (
+            <div className="story-tags">
+              <h3>Tags:</h3>
+              <div className="tags-list">
+                {displayStory.tags.map((tag, index) => (
+                  <span key={index} className="tag">{tag}</span>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="story-share">
             <h3>Share this story:</h3>
@@ -1941,11 +2063,11 @@ const StoryDetail = () => {
             </div>
           </div>
 
-          {story.relatedStories && story.relatedStories.length > 0 && (
+          {displayStory.relatedStories && displayStory.relatedStories.length > 0 && (
             <div className="related-stories">
               <h2>Related Stories</h2>
               <div className="related-grid">
-                {story.relatedStories.map((related, index) => (
+                {displayStory.relatedStories.map((related, index) => (
                   <Link to={`/story/${related.slug}`} key={index} className="related-card">
                     <img src={related.image} alt={related.title} />
                     <h3>{related.title}</h3>

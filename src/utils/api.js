@@ -34,7 +34,7 @@ export async function checkHealth() {
 
 // Newsletter Subscription
 export async function subscribeNewsletter(name, email) {
-  return apiCall('/subscribe', {
+  return apiCall('/public/subscribe', {
     method: 'POST',
     body: JSON.stringify({ name, email }),
   });
@@ -42,7 +42,7 @@ export async function subscribeNewsletter(name, email) {
 
 // Contact Form
 export async function submitContact(formData) {
-  return apiCall('/contact', {
+  return apiCall('/public/contact', {
     method: 'POST',
     body: JSON.stringify(formData),
   });

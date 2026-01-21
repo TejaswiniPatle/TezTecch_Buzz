@@ -10,6 +10,7 @@ const Contact = () => {
     subject: '',
     message: ''
   });
+  const [submitting, setSubmitting] = useState(false);
 
   const handleChange = (e) => {
     setFormData({
@@ -18,10 +19,34 @@ const Contact = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    alert('Thank you for your message! We will get back to you soon.');
-    setFormData({ name: '', email: '', subject: '', message: '' });
+    setSubmitting(true);
+
+    try {
+      const API_URL = 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/public/contact`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        alert(data.message);
+        setFormData({ name: '', email: '', subject: '', message: '' });
+      } else {
+        alert(data.message || 'Failed to submit form. Please try again.');
+      }
+    } catch (error) {
+      console.error('Contact form error:', error);
+      alert('Failed to submit form. Please try again.');
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -104,8 +129,8 @@ const Contact = () => {
               ></textarea>
             </div>
             
-            <button type="submit" className="submit-btn">
-              Send Message
+            <button type="submit" className="submit-btn" disabled={submitting}>
+              {submitting ? 'Sending...' : 'Send Message'}
             </button>
           </form>
         </div>

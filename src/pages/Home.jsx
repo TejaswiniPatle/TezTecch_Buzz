@@ -7,184 +7,135 @@ const Home = () => {
   const [showAllTrending, setShowAllTrending] = useState(false);
   const [email, setEmail] = useState('');
   const [subscribeMessage, setSubscribeMessage] = useState('');
-
-  const heroSlides = [
-    {
-      id: 1,
-      category: "FARMING",
-      title: "Monsoon Gardening: Grow Tangy Karonda (Indian Cranberry) in 6 Easy Steps",
-      description: "Learn how to cultivate this nutritious berry in your garden",
-      author: "Natasha Doshi",
-      date: "20 Jul, 2025",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200",
-      slug: "karonda-gardening"
-    },
-    {
-      id: 2,
-      category: "SUSTAINABILITY",
-      title: "Meet the Changemakers: Stories of Social Impact",
-      description: "Inspiring individuals making a difference in their communities",
-      author: "Rashi Gupta",
-      date: "20 Jul, 2025",
-      image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200",
-      slug: "tree-planting-legacy"
-    },
-    {
-      id: 3,
-      category: "STARTUP",
-      title: "From Village to Valley: The Startup Journey",
-      description: "How rural entrepreneurs are revolutionizing Indian business",
-      author: "Anamika Roy",
-      date: "19 Jul, 2025",
-      image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200",
-      slug: "startup-success-story"
-    }
-  ];
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [trendingStories, setTrendingStories] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const API_URL = 'http://localhost:5000/api';
 
   useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
-    }, 5000);
+    const fetchHomeData = async () => {
+      try {
+        setLoading(true);
+        
+        // Fetch hero slides
+        const heroResponse = await fetch(`${API_URL}/public/hero-slides`);
+        const heroData = await heroResponse.json();
+        if (heroData.success && heroData.data.length > 0) {
+          setHeroSlides(heroData.data);
+        } else {
+          // Fallback hero slides
+          setHeroSlides([
+            {
+              id: 1,
+              category: "FARMING",
+              title: "Monsoon Gardening: Grow Tangy Karonda (Indian Cranberry) in 6 Easy Steps",
+              description: "Learn how to cultivate this nutritious berry in your garden",
+              author: "Natasha Doshi",
+              date: "20 Jul, 2025",
+              image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=1200",
+              slug: "karonda-gardening"
+            },
+            {
+              id: 2,
+              category: "SUSTAINABILITY",
+              title: "Meet the Changemakers: Stories of Social Impact",
+              description: "Inspiring individuals making a difference in their communities",
+              author: "Rashi Gupta",
+              date: "20 Jul, 2025",
+              image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=1200",
+              slug: "tree-planting-legacy"
+            },
+            {
+              id: 3,
+              category: "STARTUP",
+              title: "From Village to Valley: The Startup Journey",
+              description: "How rural entrepreneurs are revolutionizing Indian business",
+              author: "Anamika Roy",
+              date: "19 Jul, 2025",
+              image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=1200",
+              slug: "startup-success-story"
+            }
+          ]);
+        }
 
-    return () => clearInterval(interval);
+        // Fetch story counts for all categories
+        const storiesResponse = await fetch(`${API_URL}/public/stories?limit=1000`);
+        const storiesData = await storiesResponse.json();
+        
+        // All categories with icons
+        const allCategories = [
+          { name: 'Sustainability', icon: '🌱', slug: 'sustainability' },
+          { name: 'Startup', icon: '🚀', slug: 'startup' },
+          { name: 'Travel', icon: '✈️', slug: 'travel' },
+          { name: 'Farming', icon: '🌾', slug: 'farming' },
+          { name: 'Education', icon: '📚', slug: 'education' },
+          { name: 'Culture', icon: '🎭', slug: 'culture' },
+          { name: 'Health', icon: '💚', slug: 'health' },
+          { name: 'Technology', icon: '💻', slug: 'technology' },
+          { name: 'Changemakers', icon: '👥', slug: 'changemakers' },
+          { name: 'Parenting', icon: '👨‍👩‍👧‍👦', slug: 'parenting' },
+          { name: 'Impact', icon: '💪', slug: 'impact' }
+        ];
+        
+        // Count stories per category
+        if (storiesData.success) {
+          const counts = {};
+          storiesData.data.forEach(story => {
+            if (story.category) {
+              counts[story.category] = (counts[story.category] || 0) + 1;
+            }
+          });
+          
+          // Add counts to categories
+          const categoriesWithCounts = allCategories.map(cat => ({
+            ...cat,
+            storyCount: counts[cat.slug] || 0
+          }));
+          
+          setCategories(categoriesWithCounts);
+        } else {
+          setCategories(allCategories.map(cat => ({ ...cat, storyCount: 0 })));
+        }
+
+        // Fetch recent trending stories (last 10 days)
+        const trendingResponse = await fetch(`${API_URL}/public/stories?limit=10`);
+        const trendingData = await trendingResponse.json();
+        if (trendingData.success && trendingData.data.length > 0) {
+          setTrendingStories(trendingData.data);
+        }
+      } catch (error) {
+        console.error('Error fetching home data:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchHomeData();
+  }, []);
+
+  useEffect(() => {
+    if (heroSlides.length > 0) {
+      const interval = setInterval(() => {
+        setCurrentSlide((prev) => (prev + 1) % heroSlides.length);
+      }, 5000);
+
+      return () => clearInterval(interval);
+    }
   }, [heroSlides.length]);
 
-  // All 30 categories
-  const allCategories = [
-    { name: 'Sustainability', icon: '🌱', count: '150+ Stories', slug: 'sustainability' },
-    { name: 'Startup', icon: '🚀', count: '80+ Stories', slug: 'startup' },
-    { name: 'Travel', icon: '✈️', count: '60+ Stories', slug: 'travel' },
-    { name: 'Farming', icon: '🌾', count: '90+ Stories', slug: 'farming' },
-    { name: 'Education', icon: '📚', count: '70+ Stories', slug: 'education' },
-    { name: 'Culture', icon: '🎭', count: '50+ Stories', slug: 'culture' },
-    { name: 'Health', icon: '💚', count: '85+ Stories', slug: 'health' },
-    { name: 'Technology', icon: '💻', count: '95+ Stories', slug: 'technology' },
-    { name: 'Environment', icon: '🌍', count: '120+ Stories', slug: 'environment' },
-    { name: 'Innovation', icon: '💡', count: '75+ Stories', slug: 'innovation' },
-    { name: 'Social Impact', icon: '🤝', count: '100+ Stories', slug: 'social-impact' },
-    { name: 'Women Power', icon: '👩', count: '110+ Stories', slug: 'women-power' },
-    { name: 'Food', icon: '🍲', count: '65+ Stories', slug: 'food' },
-    { name: 'Sports', icon: '⚽', count: '55+ Stories', slug: 'sports' },
-    { name: 'Art', icon: '🎨', count: '60+ Stories', slug: 'art' },
-    { name: 'Music', icon: '🎵', count: '45+ Stories', slug: 'music' },
-    { name: 'Wildlife', icon: '🦁', count: '70+ Stories', slug: 'wildlife' },
-    { name: 'Science', icon: '🔬', count: '80+ Stories', slug: 'science' },
-    { name: 'Architecture', icon: '🏛️', count: '40+ Stories', slug: 'architecture' },
-    { name: 'Heritage', icon: '🏰', count: '55+ Stories', slug: 'heritage' },
-    { name: 'Handicraft', icon: '🧵', count: '50+ Stories', slug: 'handicraft' },
-    { name: 'Fashion', icon: '👗', count: '45+ Stories', slug: 'fashion' },
-    { name: 'Photography', icon: '📷', count: '60+ Stories', slug: 'photography' },
-    { name: 'Literature', icon: '📖', count: '65+ Stories', slug: 'literature' },
-    { name: 'Community', icon: '👥', count: '90+ Stories', slug: 'community' },
-    { name: 'Youth', icon: '🎓', count: '75+ Stories', slug: 'youth' },
-    { name: 'Elderly Care', icon: '👴', count: '40+ Stories', slug: 'elderly-care' },
-    { name: 'Animal Welfare', icon: '🐕', count: '55+ Stories', slug: 'animal-welfare' },
-    { name: 'Wellness', icon: '🧘', count: '70+ Stories', slug: 'wellness' },
-    { name: 'Adventure', icon: '🏔️', count: '50+ Stories', slug: 'adventure' }
-  ];
-
   // Show only first 8 categories on home page
-  const displayedCategories = allCategories.slice(0, 8);
+  const displayedCategories = categories.slice(0, 8);
 
-  // All 10 trending stories (5 displayed + 5 more)
-  const allTrendingStories = [
-    {
-      id: 1,
-      title: "Monsoon Gardening: Grow Tangy Karonda (Indian Cranberry) in 6 Easy Steps",
-      category: "Farming",
-      author: "Natasha Doshi",
-      readTime: "5 min read",
-      image: "https://images.unsplash.com/photo-1416879595882-3373a0480b5b?w=600",
-      slug: "karonda-gardening"
-    },
-    {
-      id: 2,
-      title: "Meet the Changemakers: Stories of Social Impact",
-      category: "Sustainability",
-      author: "Rashi Gupta",
-      readTime: "8 min read",
-      image: "https://images.unsplash.com/photo-1488521787991-ed7bbaae773c?w=600",
-      slug: "tree-planting-legacy"
-    },
-    {
-      id: 3,
-      title: "From Village to Valley: The Startup Journey",
-      category: "Startup",
-      author: "Anamika Roy",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1559136555-9303baea8ebd?w=600",
-      slug: "startup-success-story"
-    },
-    {
-      id: 4,
-      title: "Hidden Gems: Unexplored Travel Destinations in India",
-      category: "Travel",
-      author: "Vikram Singh",
-      readTime: "7 min read",
-      image: "https://images.unsplash.com/photo-1524492412937-b28074a5d7da?w=600",
-      slug: "northeast-travel"
-    },
-    {
-      id: 5,
-      title: "Revolutionizing Education: Digital Learning in Rural Areas",
-      category: "Education",
-      author: "Priya Sharma",
-      readTime: "9 min read",
-      image: "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?w=600",
-      slug: "digital-education-tribal"
-    },
-    {
-      id: 6,
-      title: "Organic Farming: The Future of Agriculture",
-      category: "Farming",
-      author: "Rajesh Kumar",
-      readTime: "6 min read",
-      image: "https://images.unsplash.com/photo-1625246333195-78d9c38ad649?w=600",
-      slug: "ayurvedic-farming"
-    },
-    {
-      id: 7,
-      title: "Women Entrepreneurs Breaking Barriers in Rural India",
-      category: "Women Power",
-      author: "Meera Iyer",
-      readTime: "8 min read",
-      image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=600",
-      slug: "women-entrepreneurs"
-    },
-    {
-      id: 8,
-      title: "Tech Innovations Transforming Healthcare Access",
-      category: "Health",
-      author: "Dr. Arvind Patil",
-      readTime: "10 min read",
-      image: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?w=600",
-      slug: "healthcare-tech"
-    },
-    {
-      id: 9,
-      title: "Wildlife Conservation: Success Stories from India",
-      category: "Wildlife",
-      author: "Rohit Bhargava",
-      readTime: "7 min read",
-      image: "https://images.unsplash.com/photo-1564349683136-77e08dba1ef7?w=600",
-      slug: "wildlife-conservation"
-    },
-    {
-      id: 10,
-      title: "Traditional Crafts Revival: Artisans Making a Comeback",
-      category: "Handicraft",
-      author: "Sunita Reddy",
-      readTime: "9 min read",
-      image: "https://images.unsplash.com/photo-1452860606245-08befc0ff44b?w=600",
-      slug: "handicraft-revival"
-    }
-  ];
+  // Helper function to format story count
+  const formatCount = (count) => {
+    if (count === 0) return 'No stories yet';
+    if (count === 1) return '1 Story';
+    return `${count} Stories`;
+  };
 
-  // Show only first 3 trending stories on home page
-  const trendingStories = allTrendingStories.slice(0, 3);
-
-  // Determine which trending stories to display
-  const displayedTrendingStories = showAllTrending ? allTrendingStories : trendingStories;
+  // Show only first 3 trending stories on home page initially
+  const displayedTrendingStories = showAllTrending ? trendingStories : trendingStories.slice(0, 3);
 
   // Handle newsletter subscription
   const handleSubscribe = (e) => {
@@ -282,10 +233,10 @@ const Home = () => {
           <h2 className="section-title" style={{ color: '#00BFA5', textAlign: 'center' }}>Explore by Category</h2>
           <div className="categories-grid">
             {displayedCategories.map((category) => (
-              <Link to={`/stories?category=${category.slug}`} key={category.name} className="category-card">
+              <Link to={`/stories?category=${category.slug}`} key={category._id || category.name} className="category-card">
                 <div className="category-icon">{category.icon}</div>
                 <h3>{category.name}</h3>
-                <p>{category.count}</p>
+                <p>{formatCount(category.storyCount)}</p>
               </Link>
             ))}
           </div>
@@ -306,39 +257,39 @@ const Home = () => {
           <h2 className="section-title">Trending Stories</h2>
           <div className="stories-grid">
             {displayedTrendingStories.map((story) => (
-              <Link to={`/story/${story.slug}`} key={story.id} className="story-card">
-                <div className="story-image">
-                  <img src={story.image} alt={story.title} />
-                  <span className="story-category">{story.category}</span>
-                </div>
+              <Link to={`/story/${story.slug}`} key={story._id || story.slug} className="story-card">
+                <img src={story.imageUrl} alt={story.title} className="story-image" />
                 <div className="story-content">
+                  <span className="story-category">{story.category}</span>
                   <h3>{story.title}</h3>
+                  <p className="story-excerpt">{story.description}</p>
                   <div className="story-meta">
-                    <span className="author">{story.author}</span>
-                    <span>•</span>
-                    <span>{story.readTime}</span>
+                    <span className="story-date">{new Date(story.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                    <span className="story-read-time">{story.readTime} min read</span>
                   </div>
                 </div>
               </Link>
             ))}
           </div>
-          <div className="explore-all-wrapper">
-            {!showAllTrending ? (
-              <button onClick={() => setShowAllTrending(true)} className="explore-all-btn">
-                View More Trending Stories
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 5l7 7-7 7"/>
-                </svg>
-              </button>
-            ) : (
-              <button onClick={() => setShowAllTrending(false)} className="explore-all-btn">
-                Show Less
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M5 12h14M12 19l-7-7 7-7"/>
-                </svg>
-              </button>
-            )}
-          </div>
+          {trendingStories.length > 3 && (
+            <div className="explore-all-wrapper">
+              {!showAllTrending ? (
+                <button onClick={() => setShowAllTrending(true)} className="explore-all-btn">
+                  View More Trending Stories
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                  </svg>
+                </button>
+              ) : (
+                <button onClick={() => setShowAllTrending(false)} className="explore-all-btn">
+                  Show Less
+                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M5 12h14M12 19l-7-7 7-7"/>
+                  </svg>
+                </button>
+              )}
+            </div>
+          )}
         </div>
       </section>
 

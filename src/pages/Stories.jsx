@@ -14,7 +14,7 @@ const Stories = () => {
   const [categories, setCategories] = useState([]);
   const [activeCategory, setActiveCategory] = useState(categoryParam || 'all');
   const [loading, setLoading] = useState(true);
-  const [visibleStories, setVisibleStories] = useState(10);
+  const [visibleStories, setVisibleStories] = useState(50); // Show all stories initially
 
   // Generate 10 stories for each category
   const generateStories = () => {
@@ -126,34 +126,52 @@ const Stories = () => {
   useEffect(() => {
     if (categoryParam && categoryParam !== activeCategory) {
       setActiveCategory(categoryParam);
-      setVisibleStories(10);
+      setVisibleStories(50); // Show all stories when category changes
     }
   }, [categoryParam]);
 
   const fetchStories = async () => {
     setLoading(true);
     try {
-      const storiesRes = await fetch(`${API_URL}/stories`);
+      console.log('Fetching stories from:', `${API_URL}/public/stories?limit=300`);
+      const storiesRes = await fetch(`${API_URL}/public/stories?limit=300`);
       const storiesData = await storiesRes.json();
-      if (storiesData.success) {
-        setStories(storiesData.data);
+      console.log('Stories data received:', storiesData);
+      if (storiesData.success && storiesData.data.length > 0) {
+        // Map backend data to match frontend structure
+        const mappedStories = storiesData.data.map(story => ({
+          id: story._id,
+          title: story.title,
+          slug: story.slug,
+          excerpt: story.description || story.excerpt,
+          image: story.imageUrl || 'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=800',
+          category: story.category.charAt(0).toUpperCase() + story.category.slice(1),
+          categorySlug: story.category,
+          date: new Date(story.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' }),
+          readTime: `${story.readTime || 5} min read`
+        }));
+        console.log('Mapped stories with images:', mappedStories.map(s => ({ title: s.title, image: s.image })));
+        setStories(mappedStories);
+      } else {
+        console.log('No stories from backend');
+        setStories([]);
       }
 
-      const catRes = await fetch(`${API_URL}/categories`);
+      const catRes = await fetch(`${API_URL}/public/categories`);
       const catData = await catRes.json();
       if (catData.success) {
         setCategories(catData.data);
       }
     } catch (error) {
-      console.log('Using fallback data');
-      setStories(fallbackStories);
-      setCategories(fallbackCategories);
+      console.error('Error fetching stories:', error);
+      setStories([]);
+      setCategories([]);
     } finally {
       setLoading(false);
     }
   };
 
-  const displayStories = stories.length > 0 ? stories : fallbackStories;
+  const displayStories = stories;
   const displayCategories = categories.length > 0 ? categories : fallbackCategories;
 
   const activeCategoryName = searchQuery 
@@ -237,7 +255,7 @@ const Stories = () => {
             <p>Try selecting a different category or view all stories</p>
             <button onClick={() => {
               setActiveCategory('all');
-              setVisibleStories(10);
+              setVisibleStories(50);
             }} className="load-more-btn" style={{ marginTop: '20px' }}>
               View All Stories
             </button>

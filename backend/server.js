@@ -4,9 +4,14 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
 import authRoutes from './routes/auth.js';
+import adminRoutes from './routes/admin.js';
+import publicRoutes from './routes/public.js';
 import Subscriber from './models/Subscriber.js';
 import Contact from './models/Contact.js';
 import Grievance from './models/Grievance.js';
+import Story from './models/Story.js';
+import Video from './models/Video.js';
+import VisualStory from './models/VisualStory.js';
 
 dotenv.config();
 
@@ -14,27 +19,27 @@ const app = express();
 const PORT = process.env.PORT || 5000;
 
 // MongoDB connection with better error handling
-mongoose.connect(process.env.MONGODB_URI, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
+mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
     console.log('✅ MongoDB connected successfully');
     console.log(`📊 Database: ${mongoose.connection.name}`);
   })
   .catch((err) => {
     console.error('❌ MongoDB connection error:', err.message);
-    process.exit(1);
+    console.error('💡 Make sure MongoDB is running: net start MongoDB');
   });
 
-// CORS Configuration - Production Ready
+// CORS Configuration - Production Ready with Admin Panel Support
 const corsOptions = {
   origin: function (origin, callback) {
     const allowedOrigins = [
       process.env.FRONTEND_URL,
-      'http://localhost:5173',
+      process.env.ADMIN_URL,
+      'http://localhost:5173',      // Main Website
+      'http://localhost:5174',      // Admin Panel
       'http://localhost:3000',
-      'http://127.0.0.1:5173'
+      'http://127.0.0.1:5173',
+      'http://127.0.0.1:5174'
     ].filter(Boolean);
     
     // Allow requests with no origin (like mobile apps or curl requests)
@@ -62,6 +67,210 @@ app.use((req, res, next) => {
 
 // Auth routes
 app.use('/api/auth', authRoutes);
+
+// Admin routes
+app.use('/api/admin', adminRoutes);
+
+// Public routes (site settings, hero slides, etc.)
+app.use('/api/public', publicRoutes);
+
+// Public Content Routes
+
+// Get published stories
+app.get('/api/stories', async (req, res) => {
+  try {
+    const { category, featured, limit = 10, page = 1 } = req.query;
+    const query = { published: true };
+    
+    if (category) query.category = category;
+    if (featured !== undefined) query.featured = featured === 'true';
+
+    const stories = await Story.find(query)
+      .select('-createdBy')
+      .sort({ publishedAt: -1 })
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    const total = await Story.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: stories,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    console.error('Get stories error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch stories'
+    });
+  }
+});
+
+// Get single story by slug
+app.get('/api/stories/:slug', async (req, res) => {
+  try {
+    const story = await Story.findOne({ 
+      slug: req.params.slug, 
+      published: true 
+    }).select('-createdBy');
+
+    if (!story) {
+      return res.status(404).json({
+        success: false,
+        message: 'Story not found'
+      });
+    }
+
+    // Increment views
+    story.views += 1;
+    await story.save();
+
+    res.json({
+      success: true,
+      data: story
+    });
+  } catch (error) {
+    console.error('Get story error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch story'
+    });
+  }
+});
+
+// Get published videos
+app.get('/api/videos', async (req, res) => {
+  try {
+    const { category, type, featured, limit = 10, page = 1 } = req.query;
+    const query = { published: true };
+    
+    if (category) query.category = category;
+    if (type) query.type = type;
+    if (featured !== undefined) query.featured = featured === 'true';
+
+    const videos = await Video.find(query)
+      .select('-createdBy')
+      .sort({ publishedAt: -1 })
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    const total = await Video.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: videos,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    console.error('Get videos error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch videos'
+    });
+  }
+});
+
+// Get single video by slug
+app.get('/api/videos/:slug', async (req, res) => {
+  try {
+    const video = await Video.findOne({ 
+      slug: req.params.slug, 
+      published: true 
+    }).select('-createdBy');
+
+    if (!video) {
+      return res.status(404).json({
+        success: false,
+        message: 'Video not found'
+      });
+    }
+
+    // Increment views
+    video.views += 1;
+    await video.save();
+
+    res.json({
+      success: true,
+      data: video
+    });
+  } catch (error) {
+    console.error('Get video error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch video'
+    });
+  }
+});
+
+// Get published visual stories
+app.get('/api/visual-stories', async (req, res) => {
+  try {
+    const { category, featured, limit = 10, page = 1 } = req.query;
+    const query = { published: true };
+    
+    if (category) query.category = category;
+    if (featured !== undefined) query.featured = featured === 'true';
+
+    const visualStories = await VisualStory.find(query)
+      .select('-createdBy')
+      .sort({ publishedAt: -1 })
+      .limit(parseInt(limit))
+      .skip((parseInt(page) - 1) * parseInt(limit));
+
+    const total = await VisualStory.countDocuments(query);
+
+    res.json({
+      success: true,
+      data: visualStories,
+      total,
+      page: parseInt(page),
+      totalPages: Math.ceil(total / parseInt(limit))
+    });
+  } catch (error) {
+    console.error('Get visual stories error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch visual stories'
+    });
+  }
+});
+
+// Get single visual story by slug
+app.get('/api/visual-stories/:slug', async (req, res) => {
+  try {
+    const visualStory = await VisualStory.findOne({ 
+      slug: req.params.slug, 
+      published: true 
+    }).select('-createdBy');
+
+    if (!visualStory) {
+      return res.status(404).json({
+        success: false,
+        message: 'Visual story not found'
+      });
+    }
+
+    // Increment views
+    visualStory.views += 1;
+    await visualStory.save();
+
+    res.json({
+      success: true,
+      data: visualStory
+    });
+  } catch (error) {
+    console.error('Get visual story error:', error);
+    res.status(500).json({
+      success: false,
+      message: 'Failed to fetch visual story'
+    });
+  }
+});
 
 // Health check endpoint
 app.get('/api/health', (req, res) => {

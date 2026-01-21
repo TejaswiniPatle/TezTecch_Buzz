@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import ErrorBoundary from './components/ErrorBoundary';
 import ScrollToTop from './components/ScrollToTop';
 import Header from './components/Header';
@@ -39,33 +39,34 @@ function App() {
           <main className="main-content">
             <Routes>
               <Route path="/" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/stories" element={<Stories />} />
-            <Route path="/categories" element={<Categories />} />
-            <Route path="/story/:slug" element={<StoryDetail />} />
-            <Route path="/video/:slug" element={<VideoPlayer />} />
-            <Route path="/visual-stories" element={<VisualStories />} />
-            <Route path="/changemakers" element={<Changemakers />} />
-            <Route path="/shorts" element={<Shorts />} />
-            <Route path="/sustainability" element={<Sustainability />} />
-            <Route path="/video-stories" element={<VideoStories />} />
-            <Route path="/parenting" element={<Parenting />} />
-            <Route path="/our-impact" element={<OurImpact />} />
-            <Route path="/advertise" element={<Advertise />} />
-            <Route path="/brand-campaigns" element={<BrandCampaigns />} />
-            <Route path="/watch-videos" element={<WatchVideos />} />
-            <Route path="/press" element={<Press />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/career" element={<Career />} />
-            <Route path="/privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="/terms-of-use" element={<TermsOfUse />} />
-            <Route path="/grievance" element={<Grievance />} />
-            <Route path="/work-with-us" element={<WorkWithUs />} />
-          </Routes>
-        </main>
-        <Footer />
-      </div>
-    </Router>
+              <Route path="/about" element={<About />} />
+              <Route path="/stories" element={<Stories />} />
+              <Route path="/categories" element={<Categories />} />
+              <Route path="/story/:slug" element={<StoryDetail />} />
+              <Route path="/video/:slug" element={<VideoPlayer />} />
+              <Route path="/visual-stories" element={<VisualStories />} />
+              <Route path="/changemakers" element={<Changemakers />} />
+              <Route path="/shorts" element={<Shorts />} />
+              <Route path="/sustainability" element={<Sustainability />} />
+              <Route path="/video-stories" element={<VideoStories />} />
+              <Route path="/parenting" element={<Parenting />} />
+              <Route path="/our-impact" element={<OurImpact />} />
+              <Route path="/advertise" element={<Advertise />} />
+              <Route path="/brand-campaigns" element={<BrandCampaigns />} />
+              <Route path="/watch-videos" element={<WatchVideos />} />
+              <Route path="/press" element={<Press />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/career" element={<Career />} />
+              <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+              <Route path="/terms-of-use" element={<TermsOfUse />} />
+              <Route path="/grievance" element={<Grievance />} />
+              <Route path="/work-with-us" element={<WorkWithUs />} />
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </main>
+          <Footer />
+        </div>
+      </Router>
     </ErrorBoundary>
   );
 }
