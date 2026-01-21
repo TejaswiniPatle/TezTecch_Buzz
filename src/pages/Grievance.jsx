@@ -311,15 +311,11 @@ const Grievance = () => {
                     disabled={loading}
                   >
                     <option value="">Select grievance type</option>
-                    <option value="content">Content Related Issue</option>
-                    <option value="privacy">Privacy & Data Concern</option>
-                    <option value="copyright">Copyright/Intellectual Property</option>
-                    <option value="technical">Technical Problem</option>
-                    <option value="harassment">Harassment/Abuse</option>
-                    <option value="spam">Spam/Unwanted Content</option>
-                    <option value="policy">Policy Violation</option>
-                    <option value="billing">Billing/Payment Issue</option>
-                    <option value="other">Other</option>
+                    <option value="Content Issue">Content Related Issue</option>
+                    <option value="Privacy Concern">Privacy & Data Concern</option>
+                    <option value="Copyright">Copyright/Intellectual Property</option>
+                    <option value="Technical Issue">Technical Problem</option>
+                    <option value="Other">Other</option>
                   </select>
                 </div>
               </div>

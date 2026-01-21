@@ -382,13 +382,13 @@ router.post('/subscribe', async (req, res) => {
 // Submit grievance (public)
 router.post('/grievance', async (req, res) => {
   try {
-    const { name, email, phone, category, description } = req.body;
+    const { name, email, phone, grievanceType, subject, description, attachmentUrl } = req.body;
 
     // Validation
-    if (!name || !email || !category || !description) {
+    if (!name || !email || !grievanceType || !subject || !description) {
       return res.status(400).json({
         success: false,
-        message: 'Name, email, category, and description are required'
+        message: 'Name, email, grievance type, subject, and description are required'
       });
     }
 
@@ -407,11 +407,14 @@ router.post('/grievance', async (req, res) => {
     const grievance = new Grievance({
       name,
       email,
-      phone: phone || '',
-      category,
+      phone: phone || null,
+      grievanceType,
+      subject,
       description,
+      attachmentUrl: attachmentUrl || null,
       trackingNumber,
-      status: 'submitted'
+      status: 'submitted',
+      priority: 'medium'
     });
 
     await grievance.save();

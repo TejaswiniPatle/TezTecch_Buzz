@@ -2113,6 +2113,154 @@ const Modal = ({ type, item, onClose, onSave }) => {
       );
     }
 
+    if (type === 'contacts') {
+      return (
+        <>
+          <div className="view-form">
+            <div className="form-group">
+              <label>Name</label>
+              <p className="view-text">{formData.name}</p>
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <p className="view-text">{formData.email}</p>
+            </div>
+            {formData.organization && (
+              <div className="form-group">
+                <label>Organization</label>
+                <p className="view-text">{formData.organization}</p>
+              </div>
+            )}
+            {formData.subject && (
+              <div className="form-group">
+                <label>Subject</label>
+                <p className="view-text">{formData.subject}</p>
+              </div>
+            )}
+            <div className="form-group">
+              <label>Message</label>
+              <p className="view-text">{formData.message}</p>
+            </div>
+            <div className="form-group">
+              <label>Status *</label>
+              <select name="status" value={formData.status || 'pending'} onChange={handleChange} required>
+                <option value="pending">Pending</option>
+                <option value="in-progress">In Progress</option>
+                <option value="responded">Responded</option>
+                <option value="closed">Closed</option>
+              </select>
+            </div>
+            <div className="form-group">
+              <label>Admin Notes</label>
+              <textarea
+                name="notes"
+                value={formData.notes || ''}
+                onChange={handleChange}
+                placeholder="Add internal notes..."
+                rows="4"
+              />
+            </div>
+            <div className="form-group">
+              <label>Submitted At</label>
+              <p className="view-text">{new Date(formData.submittedAt).toLocaleString()}</p>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    if (type === 'grievances') {
+      return (
+        <>
+          <div className="view-form">
+            <div className="form-group">
+              <label>Tracking Number</label>
+              <p className="view-text" style={{ fontWeight: '700', color: '#667eea' }}>#{formData.trackingNumber}</p>
+            </div>
+            <div className="form-group">
+              <label>Name</label>
+              <p className="view-text">{formData.name}</p>
+            </div>
+            <div className="form-group">
+              <label>Email</label>
+              <p className="view-text">{formData.email}</p>
+            </div>
+            {formData.phone && (
+              <div className="form-group">
+                <label>Phone</label>
+                <p className="view-text">{formData.phone}</p>
+              </div>
+            )}
+            <div className="form-group">
+              <label>Grievance Type</label>
+              <p className="view-text">{formData.grievanceType}</p>
+            </div>
+            <div className="form-group">
+              <label>Subject</label>
+              <p className="view-text">{formData.subject}</p>
+            </div>
+            <div className="form-group">
+              <label>Description</label>
+              <p className="view-text">{formData.description}</p>
+            </div>
+            {formData.attachmentUrl && (
+              <div className="form-group">
+                <label>Attachment</label>
+                <a href={formData.attachmentUrl} target="_blank" rel="noopener noreferrer" className="view-link">
+                  View Attachment
+                </a>
+              </div>
+            )}
+            <div className="form-row">
+              <div className="form-group">
+                <label>Status *</label>
+                <select name="status" value={formData.status || 'submitted'} onChange={handleChange} required>
+                  <option value="submitted">Submitted</option>
+                  <option value="under-review">Under Review</option>
+                  <option value="in-progress">In Progress</option>
+                  <option value="resolved">Resolved</option>
+                  <option value="closed">Closed</option>
+                </select>
+              </div>
+              <div className="form-group">
+                <label>Priority *</label>
+                <select name="priority" value={formData.priority || 'medium'} onChange={handleChange} required>
+                  <option value="low">Low</option>
+                  <option value="medium">Medium</option>
+                  <option value="high">High</option>
+                  <option value="urgent">Urgent</option>
+                </select>
+              </div>
+            </div>
+            <div className="form-group">
+              <label>Resolution</label>
+              <textarea
+                name="resolution"
+                value={formData.resolution || ''}
+                onChange={handleChange}
+                placeholder="Enter resolution details..."
+                rows="4"
+              />
+            </div>
+            <div className="form-group">
+              <label>Admin Notes</label>
+              <textarea
+                name="adminNotes"
+                value={formData.adminNotes || ''}
+                onChange={handleChange}
+                placeholder="Add internal notes..."
+                rows="3"
+              />
+            </div>
+            <div className="form-group">
+              <label>Submitted At</label>
+              <p className="view-text">{new Date(formData.submittedAt).toLocaleString()}</p>
+            </div>
+          </div>
+        </>
+      );
+    }
+
     return null;
   };
 

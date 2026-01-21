@@ -50,7 +50,7 @@ export async function submitContact(formData) {
 
 // Grievance Submission
 export async function submitGrievance(formData) {
-  return apiCall('/grievance', {
+  return apiCall('/public/grievance', {
     method: 'POST',
     body: JSON.stringify(formData),
   });
