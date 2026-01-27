@@ -23,6 +23,9 @@ const AdminDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [pressReleases, setPressReleases] = useState([]);
   const [testimonials, setTestimonials] = useState([]);
+  const [heroSlides, setHeroSlides] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [menuItems, setMenuItems] = useState([]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,6 +130,15 @@ const AdminDashboard = () => {
         case 'testimonials':
           endpoint = '/api/admin/testimonials';
           break;
+        case 'hero-slides':
+          endpoint = '/api/admin/hero-slides';
+          break;
+        case 'categories':
+          endpoint = '/api/admin/categories';
+          break;
+        case 'menu-items':
+          endpoint = '/api/admin/menu-items';
+          break;
         default:
           return;
       }
@@ -170,6 +182,15 @@ const AdminDashboard = () => {
             break;
           case 'testimonials':
             setTestimonials(data.data);
+            break;
+          case 'hero-slides':
+            setHeroSlides(data.data);
+            break;
+          case 'categories':
+            setCategories(data.data);
+            break;
+          case 'menu-items':
+            setMenuItems(data.data);
             break;
         }
         setTotalPages(data.totalPages || 1);
@@ -338,6 +359,24 @@ const AdminDashboard = () => {
           >
             ⭐ Testimonials
           </button>
+          <button 
+            className={activeTab === 'hero-slides' ? 'active' : ''}
+            onClick={() => setActiveTab('hero-slides')}
+          >
+            🎬 Hero Slides
+          </button>
+          <button 
+            className={activeTab === 'categories' ? 'active' : ''}
+            onClick={() => setActiveTab('categories')}
+          >
+            🏷️ Categories
+          </button>
+          <button 
+            className={activeTab === 'menu-items' ? 'active' : ''}
+            onClick={() => setActiveTab('menu-items')}
+          >
+            🍔 Menu Items
+          </button>
         </nav>
         <div className="admin-user-info">
           <p>👤 {user?.name}</p>
@@ -482,6 +521,45 @@ const AdminDashboard = () => {
               onAdd={() => openModal('testimonials')}
               onEdit={(item) => openModal('testimonials', item)}
               onDelete={(id) => handleDelete('testimonials', id)}
+            />
+          )}
+
+          {activeTab === 'hero-slides' && (
+            <ContentManager
+              type="hero-slides"
+              data={heroSlides}
+              onAdd={() => openModal('hero-slides')}
+              onEdit={(item) => openModal('hero-slides', item)}
+              onDelete={(id) => handleDelete('hero-slides', id)}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+
+          {activeTab === 'categories' && (
+            <ContentManager
+              type="categories"
+              data={categories}
+              onAdd={() => openModal('categories')}
+              onEdit={(item) => openModal('categories', item)}
+              onDelete={(id) => handleDelete('categories', id)}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+
+          {activeTab === 'menu-items' && (
+            <ContentManager
+              type="menu-items"
+              data={menuItems}
+              onAdd={() => openModal('menu-items')}
+              onEdit={(item) => openModal('menu-items', item)}
+              onDelete={(id) => handleDelete('menu-items', id)}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
             />
           )}
         </div>

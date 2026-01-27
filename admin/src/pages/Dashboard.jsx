@@ -25,6 +25,7 @@ const AdminDashboard = () => {
   const [heroSlides, setHeroSlides] = useState([]);
   const [categories, setCategories] = useState([]);
   const [menuItems, setMenuItems] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -135,6 +136,9 @@ const AdminDashboard = () => {
         case 'menu-items':
           endpoint = '/api/admin/menu-items';
           break;
+        case 'testimonials':
+          endpoint = '/api/admin/testimonials';
+          break;
         default:
           return;
       }
@@ -184,6 +188,9 @@ const AdminDashboard = () => {
             break;
           case 'menu-items':
             setMenuItems(data.data);
+            break;
+          case 'testimonials':
+            setTestimonials(data.data);
             break;
         }
         setTotalPages(data.totalPages || 1);
@@ -364,6 +371,12 @@ const AdminDashboard = () => {
           >
             📑 Menu Items
           </button>
+          <button 
+            className={activeTab === 'testimonials' ? 'active' : ''}
+            onClick={() => setActiveTab('testimonials')}
+          >
+            💬 Testimonials
+          </button>
         </nav>
         <div className="admin-user-info">
           <p>👤 {user?.name}</p>
@@ -535,6 +548,19 @@ const AdminDashboard = () => {
               onAdd={() => openModal('menu-items')}
               onEdit={(item) => openModal('menu-items', item)}
               onDelete={(id) => handleDelete('menu-items', id)}
+              currentPage={currentPage}
+              totalPages={totalPages}
+              onPageChange={setCurrentPage}
+            />
+          )}
+
+          {activeTab === 'testimonials' && (
+            <ContentManager
+              type="testimonials"
+              data={testimonials}
+              onAdd={() => openModal('testimonials')}
+              onEdit={(item) => openModal('testimonials', item)}
+              onDelete={(id) => handleDelete('testimonials', id)}
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}
@@ -1259,7 +1285,12 @@ const Modal = ({ type, item, onClose, onSave }) => {
     link: '',
     parent: '',
     target: '_self',
-    isMegaMenu: false
+    isMegaMenu: false,
+    // Testimonial fields
+    quote: '',
+    position: '',
+    company: '',
+    image: ''
   });
 
   const handleChange = (e) => {
@@ -2014,6 +2045,93 @@ const Modal = ({ type, item, onClose, onSave }) => {
                   onChange={handleChange}
                 />
                 <span>Featured</span>
+              </label>
+            </div>
+          </div>
+        </>
+      );
+    }
+
+    if (type === 'testimonials') {
+      return (
+        <>
+          <div className="form-group">
+            <label>Quote *</label>
+            <textarea
+              name="quote"
+              value={formData.quote || ''}
+              onChange={handleChange}
+              required
+              placeholder="Enter testimonial quote"
+              rows="4"
+            />
+          </div>
+          <div className="form-group">
+            <label>Author Name *</label>
+            <input
+              type="text"
+              name="author"
+              value={formData.author || ''}
+              onChange={handleChange}
+              required
+              placeholder="Author name"
+            />
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Position *</label>
+              <input
+                type="text"
+                name="position"
+                value={formData.position || ''}
+                onChange={handleChange}
+                required
+                placeholder="Job position/title"
+              />
+            </div>
+            <div className="form-group">
+              <label>Company *</label>
+              <input
+                type="text"
+                name="company"
+                value={formData.company || ''}
+                onChange={handleChange}
+                required
+                placeholder="Company name"
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Image URL *</label>
+            <input
+              type="url"
+              name="image"
+              value={formData.image || ''}
+              onChange={handleChange}
+              required
+              placeholder="https://example.com/author-photo.jpg"
+            />
+          </div>
+          <div className="form-group">
+            <label>Order</label>
+            <input
+              type="number"
+              name="order"
+              value={formData.order || 0}
+              onChange={handleChange}
+              placeholder="Display order (0, 1, 2, ...)"
+            />
+          </div>
+          <div className="form-row checkbox-row">
+            <div className="form-group checkbox-group">
+              <label>
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={formData.isActive !== false}
+                  onChange={handleChange}
+                />
+                <span>Active</span>
               </label>
             </div>
           </div>
