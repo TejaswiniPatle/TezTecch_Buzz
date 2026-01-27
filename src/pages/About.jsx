@@ -14,7 +14,7 @@ const About = () => {
     {
       name: "Rajesh Kumar",
       role: "Head of Content",
-      image: "https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=400",
+      image: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=400&h=400&fit=crop",
       description: "Expert in social impact stories and documentaries"
     },
     {

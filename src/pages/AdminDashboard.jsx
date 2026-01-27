@@ -22,6 +22,7 @@ const AdminDashboard = () => {
   const [pages, setPages] = useState([]);
   const [jobs, setJobs] = useState([]);
   const [pressReleases, setPressReleases] = useState([]);
+  const [testimonials, setTestimonials] = useState([]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(1);
@@ -123,6 +124,9 @@ const AdminDashboard = () => {
         case 'press-releases':
           endpoint = '/api/admin/press-releases';
           break;
+        case 'testimonials':
+          endpoint = '/api/admin/testimonials';
+          break;
         default:
           return;
       }
@@ -163,6 +167,9 @@ const AdminDashboard = () => {
             break;
           case 'press-releases':
             setPressReleases(data.data);
+            break;
+          case 'testimonials':
+            setTestimonials(data.data);
             break;
         }
         setTotalPages(data.totalPages || 1);
@@ -325,6 +332,12 @@ const AdminDashboard = () => {
           >
             📰 Press
           </button>
+          <button 
+            className={activeTab === 'testimonials' ? 'active' : ''}
+            onClick={() => setActiveTab('testimonials')}
+          >
+            ⭐ Testimonials
+          </button>
         </nav>
         <div className="admin-user-info">
           <p>👤 {user?.name}</p>
@@ -460,6 +473,15 @@ const AdminDashboard = () => {
               currentPage={currentPage}
               totalPages={totalPages}
               onPageChange={setCurrentPage}
+            />
+          )}
+
+          {activeTab === 'testimonials' && (
+            <TestimonialsManager
+              data={testimonials}
+              onAdd={() => openModal('testimonials')}
+              onEdit={(item) => openModal('testimonials', item)}
+              onDelete={(id) => handleDelete('testimonials', id)}
             />
           )}
         </div>
@@ -1826,6 +1848,94 @@ const Modal = ({ type, item, onClose, onSave }) => {
       );
     }
 
+    if (type === 'testimonials') {
+      return (
+        <>
+          <div className="form-group">
+            <label>Quote *</label>
+            <textarea
+              name="quote"
+              value={formData.quote || ''}
+              onChange={handleChange}
+              required
+              placeholder="Testimonial quote"
+              rows="4"
+            />
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Author Name *</label>
+              <input
+                type="text"
+                name="author"
+                value={formData.author || ''}
+                onChange={handleChange}
+                required
+                placeholder="Full name"
+              />
+            </div>
+            <div className="form-group">
+              <label>Position *</label>
+              <input
+                type="text"
+                name="position"
+                value={formData.position || ''}
+                onChange={handleChange}
+                required
+                placeholder="Job title"
+              />
+            </div>
+          </div>
+          <div className="form-group">
+            <label>Company *</label>
+            <input
+              type="text"
+              name="company"
+              value={formData.company || ''}
+              onChange={handleChange}
+              required
+              placeholder="Company name"
+            />
+          </div>
+          <div className="form-group">
+            <label>Image URL *</label>
+            <input
+              type="url"
+              name="image"
+              value={formData.image || ''}
+              onChange={handleChange}
+              required
+              placeholder="https://example.com/image.jpg"
+            />
+          </div>
+          <div className="form-row">
+            <div className="form-group">
+              <label>Order</label>
+              <input
+                type="number"
+                name="order"
+                value={formData.order || 0}
+                onChange={handleChange}
+                placeholder="Display order"
+                min="0"
+              />
+            </div>
+            <div className="form-group checkbox-group">
+              <label>
+                <input
+                  type="checkbox"
+                  name="isActive"
+                  checked={formData.isActive !== false}
+                  onChange={handleChange}
+                />
+                <span>Active</span>
+              </label>
+            </div>
+          </div>
+        </>
+      );
+    }
+
     return null;
   };
 
@@ -1848,6 +1958,48 @@ const Modal = ({ type, item, onClose, onSave }) => {
           </div>
         </form>
       </div>
+    </div>
+  );
+};
+
+// Testimonials Manager Component
+const TestimonialsManager = ({ data, onAdd, onEdit, onDelete }) => {
+  return (
+    <div className="testimonials-manager">
+      <div className="manager-header">
+        <button onClick={onAdd} className="btn-primary">Add New Testimonial</button>
+      </div>
+      {data && data.length > 0 ? (
+        <div className="testimonials-grid-admin">
+          {data.map(item => (
+            <div key={item._id} className="testimonial-admin-card">
+              <div className="testimonial-admin-header">
+                <img src={item.image} alt={item.author} className="testimonial-admin-image" />
+                <div className="testimonial-admin-info">
+                  <h3>{item.author}</h3>
+                  <p>{item.position}</p>
+                  <p className="company">{item.company}</p>
+                </div>
+              </div>
+              <p className="testimonial-admin-quote">"{item.quote}"</p>
+              <div className="testimonial-admin-meta">
+                <span className={`status-badge ${item.isActive ? 'active' : 'inactive'}`}>
+                  {item.isActive ? '✓ Active' : '✕ Inactive'}
+                </span>
+                <span className="order-badge">Order: {item.order}</span>
+              </div>
+              <div className="testimonial-admin-actions">
+                <button onClick={() => onEdit(item)} className="btn-edit">Edit</button>
+                <button onClick={() => onDelete(item._id)} className="btn-delete">Delete</button>
+              </div>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <div className="empty-state">
+          <p>No testimonials found. Add your first testimonial!</p>
+        </div>
+      )}
     </div>
   );
 };

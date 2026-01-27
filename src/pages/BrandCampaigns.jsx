@@ -1,9 +1,83 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import './BrandCampaigns.css';
 
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+
 const BrandCampaigns = () => {
   const [activeTab, setActiveTab] = useState('content');
+  const [testimonials, setTestimonials] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const scrollContainerRef = useRef(null);
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  const fetchTestimonials = async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/public/testimonials`);
+      const data = await response.json();
+      if (data.success) {
+        setTestimonials(data.data);
+      }
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const scroll = (direction) => {
+    if (scrollContainerRef.current) {
+      const scrollAmount = 400;
+      scrollContainerRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
+
+  // Continuous auto-scroll effect - smooth left to right
+  useEffect(() => {
+    if (!scrollContainerRef.current || testimonials.length === 0) return;
+
+    let animationFrameId;
+    let isPaused = false;
+
+    const continuousScroll = () => {
+      if (scrollContainerRef.current && !isPaused) {
+        const container = scrollContainerRef.current;
+        const maxScroll = container.scrollWidth / 2; // Half because we duplicate
+        
+        // Scroll by 1 pixel for smooth continuous effect
+        container.scrollLeft += 1;
+        
+        // Reset to beginning when reached halfway (seamless loop)
+        if (container.scrollLeft >= maxScroll) {
+          container.scrollLeft = 0;
+        }
+      }
+      animationFrameId = requestAnimationFrame(continuousScroll);
+    };
+
+    // Start continuous scrolling
+    animationFrameId = requestAnimationFrame(continuousScroll);
+
+    // Pause on hover
+    const container = scrollContainerRef.current;
+    const handleMouseEnter = () => { isPaused = true; };
+    const handleMouseLeave = () => { isPaused = false; };
+    
+    container.addEventListener('mouseenter', handleMouseEnter);
+    container.addEventListener('mouseleave', handleMouseLeave);
+
+    return () => {
+      cancelAnimationFrame(animationFrameId);
+      container.removeEventListener('mouseenter', handleMouseEnter);
+      container.removeEventListener('mouseleave', handleMouseLeave);
+    };
+  }, [testimonials]);
 
   const stats = [
     { number: "1M+", label: "Monthly Reach" },
@@ -132,20 +206,7 @@ const BrandCampaigns = () => {
     }
   ];
 
-  const testimonials = [
-    {
-      quote: "TezTecch Buzz helped us reach millions with our sustainability message. Their authentic storytelling approach resonated perfectly with our target audience.",
-      author: "Rajesh Sharma",
-      position: "Marketing Director, EcoLife Foundation",
-      image: "https://images.unsplash.com/photo-1556157382-97eda2f9e2bf?w=200"
-    },
-    {
-      quote: "The team's dedication to quality content and their engaged community made our campaign a huge success. We saw a 300% increase in brand awareness.",
-      author: "Priya Gupta",
-      position: "CEO, SkillUp Academy",
-      image: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=200"
-    }
-  ];
+
 
   return (
     <div className="brand-campaigns-page">
@@ -337,20 +398,55 @@ const BrandCampaigns = () => {
           <div style={{ textAlign: 'center', marginBottom: '60px' }}>
             <h2 style={{ fontSize: '2.8rem', fontWeight: '800', color: '#00BFA5', margin: '0', textAlign: 'center' }}>What Our Partners Say</h2>
           </div>
-          <div className="testimonials-grid">
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="testimonial-card">
-                <div className="quote-icon">"</div>
-                <p className="testimonial-text">{testimonial.quote}</p>
-                <div className="testimonial-author">
-                  <img src={testimonial.image} alt={testimonial.author} />
-                  <div className="author-info">
-                    <h4>{testimonial.author}</h4>
-                    <p>{testimonial.position}</p>
-                  </div>
-                </div>
-              </div>
-            ))}
+          <div className="testimonials-wrapper">
+            <button className="scroll-btn scroll-btn-left" onClick={() => scroll('left')} aria-label="Scroll left">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M15 18l-6-6 6-6"/>
+              </svg>
+            </button>
+            <div className="testimonials-scroll-container" ref={scrollContainerRef}>
+              {loading ? (
+                <div className="loading-testimonials">Loading testimonials...</div>
+              ) : testimonials.length > 0 ? (
+                <>
+                  {/* Original testimonials */}
+                  {testimonials.map((testimonial, index) => (
+                    <div key={`original-${testimonial._id || index}`} className="testimonial-card">
+                      <div className="quote-icon">"</div>
+                      <p className="testimonial-text">{testimonial.quote}</p>
+                      <div className="testimonial-author">
+                        <img src={testimonial.image} alt={testimonial.author} />
+                        <div className="author-info">
+                          <h4>{testimonial.author}</h4>
+                          <p>{testimonial.position}, {testimonial.company}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                  {/* Duplicate testimonials for seamless loop */}
+                  {testimonials.map((testimonial, index) => (
+                    <div key={`duplicate-${testimonial._id || index}`} className="testimonial-card">
+                      <div className="quote-icon">"</div>
+                      <p className="testimonial-text">{testimonial.quote}</p>
+                      <div className="testimonial-author">
+                        <img src={testimonial.image} alt={testimonial.author} />
+                        <div className="author-info">
+                          <h4>{testimonial.author}</h4>
+                          <p>{testimonial.position}, {testimonial.company}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              ) : (
+                <div className="no-testimonials">No testimonials available</div>
+              )}
+            </div>
+            <button className="scroll-btn scroll-btn-right" onClick={() => scroll('right')} aria-label="Scroll right">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M9 18l6-6-6-6"/>
+              </svg>
+            </button>
           </div>
         </div>
       </section>

@@ -12,6 +12,7 @@ import Grievance from '../models/Grievance.js';
 import Page from '../models/Page.js';
 import Job from '../models/Job.js';
 import PressRelease from '../models/PressRelease.js';
+import Testimonial from '../models/Testimonial.js';
 
 const router = express.Router();
 
@@ -554,6 +555,17 @@ router.get('/press-releases/:slug', async (req, res) => {
   } catch (error) {
     console.error('Get press release error:', error);
     res.status(500).json({ success: false, message: 'Failed to fetch press release' });
+  }
+});
+
+// Get active testimonials (public)
+router.get('/testimonials', async (req, res) => {
+  try {
+    const testimonials = await Testimonial.find({ isActive: true }).sort({ order: 1, createdAt: -1 });
+    res.json({ success: true, data: testimonials });
+  } catch (error) {
+    console.error('Get testimonials error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch testimonials' });
   }
 });
 

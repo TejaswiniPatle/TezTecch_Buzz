@@ -14,6 +14,7 @@ import MenuItem from '../models/MenuItem.js';
 import Page from '../models/Page.js';
 import Job from '../models/Job.js';
 import PressRelease from '../models/PressRelease.js';
+import Testimonial from '../models/Testimonial.js';
 
 const router = express.Router();
 
@@ -1483,6 +1484,85 @@ router.delete('/press-releases/:id', authenticate, isAdmin, async (req, res) => 
   } catch (error) {
     console.error('Delete press release error:', error);
     res.status(500).json({ success: false, message: 'Failed to delete press release' });
+  }
+});
+
+// ============ TESTIMONIALS CRUD ============
+
+// Get all testimonials
+router.get('/testimonials', authenticate, isAdmin, async (req, res) => {
+  try {
+    const testimonials = await Testimonial.find().sort({ order: 1, createdAt: -1 });
+    res.json({ success: true, data: testimonials });
+  } catch (error) {
+    console.error('Get testimonials error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch testimonials' });
+  }
+});
+
+// Get single testimonial
+router.get('/testimonials/:id', authenticate, isAdmin, async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findById(req.params.id);
+    if (!testimonial) {
+      return res.status(404).json({ success: false, message: 'Testimonial not found' });
+    }
+    res.json({ success: true, data: testimonial });
+  } catch (error) {
+    console.error('Get testimonial error:', error);
+    res.status(500).json({ success: false, message: 'Failed to fetch testimonial' });
+  }
+});
+
+// Create testimonial
+router.post('/testimonials', authenticate, isAdmin, async (req, res) => {
+  try {
+    const testimonial = new Testimonial(req.body);
+    await testimonial.save();
+    res.status(201).json({
+      success: true,
+      message: 'Testimonial created successfully',
+      data: testimonial
+    });
+  } catch (error) {
+    console.error('Create testimonial error:', error);
+    res.status(500).json({ success: false, message: 'Failed to create testimonial' });
+  }
+});
+
+// Update testimonial
+router.put('/testimonials/:id', authenticate, isAdmin, async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+    );
+    if (!testimonial) {
+      return res.status(404).json({ success: false, message: 'Testimonial not found' });
+    }
+    res.json({
+      success: true,
+      message: 'Testimonial updated successfully',
+      data: testimonial
+    });
+  } catch (error) {
+    console.error('Update testimonial error:', error);
+    res.status(500).json({ success: false, message: 'Failed to update testimonial' });
+  }
+});
+
+// Delete testimonial
+router.delete('/testimonials/:id', authenticate, isAdmin, async (req, res) => {
+  try {
+    const testimonial = await Testimonial.findByIdAndDelete(req.params.id);
+    if (!testimonial) {
+      return res.status(404).json({ success: false, message: 'Testimonial not found' });
+    }
+    res.json({ success: true, message: 'Testimonial deleted successfully' });
+  } catch (error) {
+    console.error('Delete testimonial error:', error);
+    res.status(500).json({ success: false, message: 'Failed to delete testimonial' });
   }
 });
 
