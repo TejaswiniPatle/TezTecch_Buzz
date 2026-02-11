@@ -38,6 +38,45 @@ const seedDatabase = async () => {
 const stories = [
   // Changemakers Category (10 stories)
   {
+    title: 'Empowering Communities Through Innovation',
+    slug: 'empowering-communities-innovation',
+    description: 'Discover stories of change and transformation across India',
+    content: `In villages and cities across India, a quiet revolution is taking place. Communities are coming together to solve local problems through innovation and collaboration.
+
+The Power of Community Action
+
+When individuals unite for a common cause, extraordinary things happen. From setting up community libraries to organizing skill development workshops, ordinary people are creating extraordinary impact.
+
+Digital Empowerment
+
+Technology has become a great equalizer. Community centers are now offering digital literacy programs, teaching everything from basic computer skills to coding. Young and old alike are learning to navigate the digital world.
+
+Social Entrepreneurship
+
+Many communities are developing sustainable business models that address local needs while generating income. These social enterprises are proving that profit and purpose can go hand in hand.
+
+Youth Leadership
+
+The next generation is stepping up. Youth-led initiatives are tackling issues ranging from environmental conservation to mental health awareness.
+
+Collaborative Solutions
+
+By working together, communities are finding innovative solutions to age-old problems. Cooperative farming, shared resources, and collective decision-making are creating resilient communities.
+
+The Road Ahead
+
+As more communities embrace innovation and collaboration, we are witnessing the emergence of a new India - one built on the foundations of community empowerment and inclusive growth.`,
+    category: 'changemakers',
+    author: 'TezTecch Team',
+    imageUrl: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=800',
+    tags: ['community', 'innovation', 'empowerment'],
+    published: true,
+    featured: true,
+    readTime: 6,
+    views: 2340,
+    createdBy: adminUser._id
+  },
+  {
     title: 'Empowering Rural Women Through Technology',
     slug: 'empowering-rural-women-through-technology',
     description: 'How digital literacy programs are transforming lives in rural India',
@@ -341,6 +380,49 @@ const stories = [
   },
 
   // Sustainability Category (10 stories)
+  {
+    title: 'Join the Sustainability Movement',
+    slug: 'sustainability-movement',
+    description: 'Learn how you can make a difference for our planet',
+    content: `Climate change and environmental degradation are the defining challenges of our time. But across India, individuals and communities are rising to meet these challenges head-on.
+
+Every Action Counts
+
+From reducing plastic use to conserving water, small changes in our daily lives can have a massive cumulative impact. The sustainability movement is about making conscious choices every day.
+
+Green Living
+
+More Indians are adopting sustainable lifestyles. Urban gardening, composting, and choosing eco-friendly products are becoming mainstream practices.
+
+Renewable Energy
+
+Solar panels on rooftops, wind energy farms, and biogas plants are transforming how we generate and consume energy. The renewable energy revolution is creating a cleaner future.
+
+Zero Waste Philosophy
+
+The zero waste movement encourages us to refuse, reduce, reuse, recycle, and rot. Communities are setting up waste segregation systems and composting units.
+
+Sustainable Transport
+
+Cycling, carpooling, and using public transport are not just reducing emissions but also creating healthier, happier cities.
+
+Education and Awareness
+
+Schools and colleges are introducing environmental education. Young people are leading climate strikes and awareness campaigns.
+
+Be the Change
+
+The sustainability movement needs everyone. Whether you start a community garden or simply carry a reusable bag, your contribution matters. Together, we can create a sustainable future for generations to come.`,
+    category: 'sustainability',
+    author: 'TezTecch Team',
+    imageUrl: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=800',
+    tags: ['sustainability', 'environment', 'climate action'],
+    published: true,
+    featured: true,
+    readTime: 7,
+    views: 1890,
+    createdBy: adminUser._id
+  },
   {
     title: 'Zero Waste Living: A Complete Guide',
     slug: 'zero-waste-living-complete-guide',
@@ -1121,6 +1203,57 @@ Start today. Start small. Start where you are. The planet will thank you.`,
 
   // Farming Category (5 stories)
   {
+    title: 'Innovation in Agriculture: The Future of Farming',
+    slug: 'innovation-agriculture-future',
+    description: 'How technology is revolutionizing Indian farming and empowering farmers',
+    content: `Indian agriculture is undergoing a technological revolution. Smart farming techniques and innovative practices are transforming how food is grown, making farming more productive and sustainable.
+
+Precision Agriculture
+
+Farmers are now using GPS technology, drones, and sensors to monitor soil health, water levels, and crop growth. This data-driven approach is optimizing resource use and increasing yields.
+
+Drip Irrigation Revolution
+
+Water scarcity is a major challenge, but drip irrigation systems are helping farmers use water efficiently. This technology can reduce water usage by up to 60% while improving crop yields.
+
+Organic Farming Renaissance
+
+There's a growing movement towards organic farming. Farmers are rediscovering traditional practices and combining them with modern knowledge to grow chemical-free crops.
+
+Farm-to-Market Digital Platforms
+
+Mobile apps and e-commerce platforms are connecting farmers directly with consumers and markets, eliminating middlemen and ensuring better prices for farmers.
+
+Agri-Tech Startups
+
+Innovative startups are developing solutions ranging from weather prediction apps to AI-powered pest detection systems, empowering farmers with information and tools.
+
+Cooperative Farming Models
+
+Farmer Producer Organizations (FPOs) are helping small farmers pool resources, share knowledge, and access better markets collectively.
+
+Sustainable Practices
+
+Intercropping, crop rotation, and natural pest management are being revived. These sustainable practices are improving soil health and reducing dependency on chemicals.
+
+Youth in Agriculture
+
+A new generation of educated youth is entering farming with fresh ideas and entrepreneurial spirit, bringing innovation to rural areas.
+
+The Way Forward
+
+With technology and innovation, Indian agriculture is poised for a transformation. The future of farming is smart, sustainable, and prosperous.`,
+    category: 'farming',
+    author: 'TezTecch Team',
+    imageUrl: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=800',
+    tags: ['agriculture', 'technology', 'innovation', 'farming'],
+    published: true,
+    featured: true,
+    readTime: 8,
+    views: 1560,
+    createdBy: adminUser._id
+  },
+  {
     title: 'Organic Farming Revolution: Chemical-Free Agriculture',
     slug: 'organic-farming-revolution-chemical-free-agriculture',
     description: 'How farmers are transitioning to sustainable organic methods',
@@ -1357,11 +1490,10 @@ const heroSlides = [
     title: 'Empowering Communities Through Innovation',
     slug: 'empowering-communities-innovation',
     description: 'Discover stories of change and transformation',
-    category: 'changemakers',
+    category: 'CHANGEMAKERS',
     author: 'TezTecch Team',
+    date: '12 Jan 2026',
     image: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1600',
-    buttonText: 'Explore Stories',
-    buttonLink: '/stories',
     order: 1,
     active: true
   },
@@ -1369,12 +1501,22 @@ const heroSlides = [
     title: 'Join the Sustainability Movement',
     slug: 'sustainability-movement',
     description: 'Learn how you can make a difference',
-    category: 'sustainability',
+    category: 'SUSTAINABILITY',
     author: 'TezTecch Team',
+    date: '12 Jan 2026',
     image: 'https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?w=1600',
-    buttonText: 'Watch Videos',
-    buttonLink: '/videos',
     order: 2,
+    active: true
+  },
+  {
+    title: 'Innovation in Agriculture: The Future of Farming',
+    slug: 'innovation-agriculture-future',
+    description: 'How technology is revolutionizing Indian farming',
+    category: 'FARMING',
+    author: 'TezTecch Team',
+    date: '12 Jan 2026',
+    image: 'https://images.unsplash.com/photo-1625246333195-78d9c38ad449?w=1600',
+    order: 3,
     active: true
   }
 ];
