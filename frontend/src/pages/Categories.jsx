@@ -53,7 +53,8 @@ const Categories = () => {
     try {
       setError(null);
       // Fetch all stories to count by category
-      const response = await fetch('http://localhost:5000/api/public/stories?limit=1000');
+      const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
+      const response = await fetch(`${API_URL}/public/stories?limit=1000`);
       
       if (!response.ok) {
         throw new Error('Failed to fetch stories');
