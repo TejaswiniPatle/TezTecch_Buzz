@@ -633,11 +633,12 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const adminDistPath = path.join(__dirname, 'admin-dist');
 
-// Serve admin static assets
-app.use('/admin', express.static(adminDistPath));
+// Serve admin static assets at root
+app.use(express.static(adminDistPath));
 
-// SPA fallback - serve index.html for all /admin/* routes
-app.get('/admin/*', (req, res) => {
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res) => {
+  if (req.path.startsWith('/api')) return res.status(404).json({ message: 'API route not found' });
   res.sendFile(path.join(adminDistPath, 'index.html'));
 });
 

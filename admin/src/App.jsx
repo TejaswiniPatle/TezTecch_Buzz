@@ -18,7 +18,7 @@ const ProtectedRoute = ({ children }) => {
 
 function App() {
   return (
-    <Router basename="/admin">
+    <Router>
       <div className="AdminApp">
         <Routes>
           <Route path="/" element={<Navigate to="/login" replace />} />
