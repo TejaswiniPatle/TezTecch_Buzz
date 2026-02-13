@@ -576,7 +576,7 @@
 .stories-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 30px;
+  gap: 20px;
 }
 
 .explore-all-wrapper {
@@ -671,10 +671,11 @@
 }
 
 .story-content {
-  padding: 20px;
+  padding: 15px 20px;
   flex: 1;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
 }
 
 .story-content h3 {
@@ -700,8 +701,8 @@
   font-size: 0.95rem;
   color: #666;
   line-height: 1.5;
-  margin: 0 0 12px;
-  flex: 1;
+  margin: 0 0 8px;
+  flex: 0 0 auto;
   text-align: justify;
   text-justify: inter-word;
   display: -webkit-box;
@@ -715,9 +716,10 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-top: 12px;
+  padding-top: 10px;
   border-top: 1px solid #eee;
   font-size: 0.9rem;
+  margin-top: auto;
   color: #888;
   width: 100%;
 }

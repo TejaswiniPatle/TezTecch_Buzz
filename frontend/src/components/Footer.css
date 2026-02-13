@@ -242,6 +242,10 @@
   .footer-section h3 {
     font-size: 1rem;
   }
+
+  .footer-section ul li a {
+    font-size: 0.95rem;
+  }
 }
 
 @media (max-width: 480px) {

@@ -276,11 +276,6 @@
   width: 100%;
   box-sizing: border-box;
 }
-  padding: 30px;
-  border-radius: 12px;
-  margin-bottom: 30px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
 
 .story-tags h3 {
   font-size: 1.2rem;
@@ -392,8 +387,6 @@
   width: 100%;
   box-sizing: border-box;
 }
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-}
 
 .related-stories h2 {
   font-size: 1.8rem;
@@ -439,6 +432,26 @@
 }
 
 /* Responsive Design */
+@media (max-width: 1024px) {
+  .story-tags,
+  .story-share,
+  .related-stories {
+    padding: 30px 30px;
+  }
+
+  .content-article {
+    padding: 2.5rem 3rem;
+  }
+
+  .story-title {
+    font-size: 2.5rem;
+  }
+
+  .related-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .story-detail {
     padding-top: 70px;

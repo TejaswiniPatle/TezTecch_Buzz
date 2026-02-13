@@ -122,11 +122,37 @@
 }
 
 @media (max-width: 768px) {
+  .changemakers-page .page-header {
+    padding: 40px 20px;
+  }
+
   .changemakers-page .page-header h1 {
     font-size: 1.8rem;
   }
 
   .changemakers-page .changemakers-grid {
     grid-template-columns: 1fr;
+  }
+
+  .changemakers-page .changemaker-image {
+    height: 180px;
+  }
+}
+
+@media (max-width: 480px) {
+  .changemakers-page .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .changemakers-page .container {
+    padding: 30px 15px;
+  }
+
+  .changemakers-page .changemakers-grid {
+    gap: 20px;
+  }
+
+  .changemakers-page .changemaker-info {
+    padding: 15px;
   }
 }

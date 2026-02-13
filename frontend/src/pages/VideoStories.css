@@ -131,6 +131,10 @@
 }
 
 @media (max-width: 768px) {
+  .video-stories-page .page-header {
+    padding: 40px 20px;
+  }
+
   .video-stories-page .page-header h1 {
     font-size: 1.8rem;
   }
@@ -141,5 +145,24 @@
 
   .video-stories-page .video-story-images {
     height: 180px;
+  }
+
+  .video-stories-page .video-play-icon {
+    width: 50px;
+    height: 50px;
+  }
+}
+
+@media (max-width: 480px) {
+  .video-stories-page .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .video-stories-page .container {
+    padding: 30px 15px;
+  }
+
+  .video-stories-page .video-stories-grid {
+    gap: 20px;
   }
 }

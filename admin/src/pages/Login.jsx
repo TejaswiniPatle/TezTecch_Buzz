@@ -63,7 +63,6 @@ const Login = () => {
         <div className="login-header">
           <h1>TezTecch Buzz</h1>
           <h2>Admin Panel</h2>
-          <p className="admin-port-info">🔐 Admin Port: 5174</p>
         </div>
 
         <form onSubmit={handleSubmit} className="login-form">
@@ -99,12 +98,6 @@ const Login = () => {
             {loading ? 'Logging in...' : 'Login'}
           </button>
         </form>
-
-        <div className="login-footer">
-          <a href="http://localhost:5173" className="back-home-btn" target="_blank" rel="noopener noreferrer">
-            🌐 Visit Main Website (Port 5173)
-          </a>
-        </div>
       </div>
     </div>
   );

@@ -119,6 +119,10 @@
 }
 
 @media (max-width: 768px) {
+  .sustainability-page .page-header {
+    padding: 40px 20px;
+  }
+
   .sustainability-page .page-header h1 {
     font-size: 1.8rem;
   }
@@ -134,5 +138,19 @@
 
   .sustainability-page .sustainability-content {
     padding: 20px;
+  }
+}
+
+@media (max-width: 480px) {
+  .sustainability-page .page-header h1 {
+    font-size: 1.5rem;
+  }
+
+  .sustainability-page .container {
+    padding: 30px 15px;
+  }
+
+  .sustainability-page .sustainability-content h2 {
+    font-size: 1.3rem;
   }
 }
