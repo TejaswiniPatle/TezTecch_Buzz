@@ -3,6 +3,8 @@ import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
 import mongoose from 'mongoose';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import authRoutes from './routes/auth.js';
 import adminRoutes from './routes/admin.js';
 import publicRoutes from './routes/public.js';
@@ -624,6 +626,19 @@ process.on('SIGTERM', () => {
     console.log('MongoDB connection closed');
     process.exit(0);
   });
+});
+
+// Serve Admin Panel static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const adminDistPath = path.join(__dirname, 'admin-dist');
+
+// Serve admin static assets
+app.use('/admin', express.static(adminDistPath));
+
+// SPA fallback - serve index.html for all /admin/* routes
+app.get('/admin/*', (req, res) => {
+  res.sendFile(path.join(adminDistPath, 'index.html'));
 });
 
 // Start server

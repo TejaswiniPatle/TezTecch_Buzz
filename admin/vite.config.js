@@ -4,9 +4,10 @@ import react from '@vitejs/plugin-react'
 // Admin Panel Configuration - Runs on Port 5174
 export default defineConfig({
   plugins: [react()],
+  base: '/admin/',
   
   build: {
-    outDir: '../dist-admin',
+    outDir: '../backend/admin-dist',
     emptyOutDir: true,
     target: 'esnext',
     minify: 'terser',

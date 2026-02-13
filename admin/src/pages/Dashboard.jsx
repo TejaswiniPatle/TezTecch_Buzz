@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Dashboard.css';
 
-const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
 
 const AdminDashboard = () => {
   const navigate = useNavigate();
@@ -603,7 +603,7 @@ const DashboardStats = ({ stats, onTabChange }) => {
 
   const fetchRecentData = async () => {
     try {
-      const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:5000';
+      const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
       
       const [storiesRes, videosRes, contactsRes, grievancesRes] = await Promise.all([
         fetch(`${API_BASE}/api/admin/stories?limit=5`, { headers: getAuthHeaders() }),
