@@ -8,7 +8,13 @@ const AdminDashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
   const [activeTab, setActiveTab] = useState('dashboard');
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [stats, setStats] = useState(null);
+
+  const handleTabChange = (tab) => {
+    setActiveTab(tab);
+    setSidebarOpen(false);
+  };
   const [loading, setLoading] = useState(true);
 
   // Data states
@@ -281,7 +287,15 @@ const AdminDashboard = () => {
 
   return (
     <div className="admin-dashboard">
-      <aside className="admin-sidebar">
+      {/* Mobile overlay */}
+      {sidebarOpen && <div className="sidebar-overlay" onClick={() => setSidebarOpen(false)} />}
+      
+      {/* Hamburger button for mobile */}
+      <button className="hamburger-btn" onClick={() => setSidebarOpen(!sidebarOpen)}>
+        {sidebarOpen ? '✕' : '☰'}
+      </button>
+
+      <aside className={`admin-sidebar ${sidebarOpen ? 'open' : ''}`}>
         <div className="admin-logo">
           <h2>TezTecch Buzz</h2>
           <p>Admin Panel</p>
@@ -289,91 +303,91 @@ const AdminDashboard = () => {
         <nav className="admin-nav">
           <button 
             className={activeTab === 'dashboard' ? 'active' : ''}
-            onClick={() => setActiveTab('dashboard')}
+            onClick={() => handleTabChange('dashboard')}
           >
             📊 Dashboard
           </button>
           <button 
             className={activeTab === 'stories' ? 'active' : ''}
-            onClick={() => setActiveTab('stories')}
+            onClick={() => handleTabChange('stories')}
           >
             📝 Stories
           </button>
           <button 
             className={activeTab === 'videos' ? 'active' : ''}
-            onClick={() => setActiveTab('videos')}
+            onClick={() => handleTabChange('videos')}
           >
             🎥 Videos
           </button>
           <button 
             className={activeTab === 'visual-stories' ? 'active' : ''}
-            onClick={() => setActiveTab('visual-stories')}
+            onClick={() => handleTabChange('visual-stories')}
           >
             🖼️ Visual Stories
           </button>
           <button 
             className={activeTab === 'subscribers' ? 'active' : ''}
-            onClick={() => setActiveTab('subscribers')}
+            onClick={() => handleTabChange('subscribers')}
           >
             📧 Subscribers
           </button>
           <button 
             className={activeTab === 'contacts' ? 'active' : ''}
-            onClick={() => setActiveTab('contacts')}
+            onClick={() => handleTabChange('contacts')}
           >
             💬 Contacts
           </button>
           <button 
             className={activeTab === 'grievances' ? 'active' : ''}
-            onClick={() => setActiveTab('grievances')}
+            onClick={() => handleTabChange('grievances')}
           >
             🎫 Grievances
           </button>
           <button 
             className={activeTab === 'users' ? 'active' : ''}
-            onClick={() => setActiveTab('users')}
+            onClick={() => handleTabChange('users')}
           >
             👥 Users
           </button>
           <button 
             className={activeTab === 'pages' ? 'active' : ''}
-            onClick={() => setActiveTab('pages')}
+            onClick={() => handleTabChange('pages')}
           >
             📄 Pages
           </button>
           <button 
             className={activeTab === 'jobs' ? 'active' : ''}
-            onClick={() => setActiveTab('jobs')}
+            onClick={() => handleTabChange('jobs')}
           >
             💼 Jobs
           </button>
           <button 
             className={activeTab === 'press-releases' ? 'active' : ''}
-            onClick={() => setActiveTab('press-releases')}
+            onClick={() => handleTabChange('press-releases')}
           >
             📰 Press
           </button>
           <button 
             className={activeTab === 'hero-slides' ? 'active' : ''}
-            onClick={() => setActiveTab('hero-slides')}
+            onClick={() => handleTabChange('hero-slides')}
           >
             🎭 Hero Slides
           </button>
           <button 
             className={activeTab === 'categories' ? 'active' : ''}
-            onClick={() => setActiveTab('categories')}
+            onClick={() => handleTabChange('categories')}
           >
             🏷️ Categories
           </button>
           <button 
             className={activeTab === 'menu-items' ? 'active' : ''}
-            onClick={() => setActiveTab('menu-items')}
+            onClick={() => handleTabChange('menu-items')}
           >
             📑 Menu Items
           </button>
           <button 
             className={activeTab === 'testimonials' ? 'active' : ''}
-            onClick={() => setActiveTab('testimonials')}
+            onClick={() => handleTabChange('testimonials')}
           >
             💬 Testimonials
           </button>
