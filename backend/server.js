@@ -570,7 +570,21 @@ app.get('/api/grievance/:trackingNumber', async (req, res) => {
   }
 });
 
-// 404 handler
+// Serve Admin Panel static files
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const adminDistPath = path.join(__dirname, 'admin-dist');
+
+// Serve admin static assets at root
+app.use(express.static(adminDistPath));
+
+// SPA fallback - serve index.html for all non-API routes
+app.get('*', (req, res, next) => {
+  if (req.path.startsWith('/api')) return next();
+  res.sendFile(path.join(adminDistPath, 'index.html'));
+});
+
+// 404 handler for API routes
 app.use((req, res) => {
   res.status(404).json({
     success: false,
@@ -626,20 +640,6 @@ process.on('SIGTERM', () => {
     console.log('MongoDB connection closed');
     process.exit(0);
   });
-});
-
-// Serve Admin Panel static files
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const adminDistPath = path.join(__dirname, 'admin-dist');
-
-// Serve admin static assets at root
-app.use(express.static(adminDistPath));
-
-// SPA fallback - serve index.html for all non-API routes
-app.get('*', (req, res) => {
-  if (req.path.startsWith('/api')) return res.status(404).json({ message: 'API route not found' });
-  res.sendFile(path.join(adminDistPath, 'index.html'));
 });
 
 // Start server
