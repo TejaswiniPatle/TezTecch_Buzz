@@ -285,8 +285,8 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// Root endpoint
-app.get('/', (req, res) => {
+// API info endpoint (moved from / to /api)
+app.get('/api', (req, res) => {
   res.json({
     name: 'TezTecch Buzz API',
     version: '1.0.0',
