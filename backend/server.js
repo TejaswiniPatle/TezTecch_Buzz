@@ -20,6 +20,12 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Serve Admin Panel static files (before CORS so assets aren't blocked)
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const adminDistPath = path.join(__dirname, 'admin-dist');
+app.use(express.static(adminDistPath));
+
 // MongoDB connection with better error handling
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => {
@@ -570,15 +576,7 @@ app.get('/api/grievance/:trackingNumber', async (req, res) => {
   }
 });
 
-// Serve Admin Panel static files
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-const adminDistPath = path.join(__dirname, 'admin-dist');
-
-// Serve admin static assets at root
-app.use(express.static(adminDistPath));
-
-// SPA fallback - serve index.html for all non-API routes
+// SPA fallback - serve admin index.html for all non-API routes
 app.get('*', (req, res, next) => {
   if (req.path.startsWith('/api')) return next();
   res.sendFile(path.join(adminDistPath, 'index.html'));
