@@ -43,6 +43,8 @@ const corsOptions = {
     const allowedOrigins = [
       process.env.FRONTEND_URL,
       process.env.ADMIN_URL,
+      process.env.RENDER_EXTERNAL_URL,
+      'https://teztecch-buzz.onrender.com',
       'http://localhost:5173',      // Main Website
       'http://localhost:5174',      // Admin Panel
       'http://localhost:3000',
