@@ -45,13 +45,17 @@ const corsOptions = {
       process.env.ADMIN_URL,
       process.env.RENDER_EXTERNAL_URL,
       'https://teztecch-buzz.onrender.com',
-      'http://localhost:5173',      // Main Website
-      'http://localhost:5174',      // Admin Panel
+      'https://teztecch-buzz.vercel.app',
+      'http://localhost:5173',
+      'http://localhost:5174',
       'http://localhost:3000',
       'http://127.0.0.1:5173',
       'http://127.0.0.1:5174'
     ].filter(Boolean);
-    
+
+    console.log('CORS check: request origin =', origin);
+    console.log('CORS allowedOrigins =', allowedOrigins);
+
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
       callback(null, true);
