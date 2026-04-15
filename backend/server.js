@@ -40,17 +40,19 @@ mongoose.connect(process.env.MONGODB_URI)
 // CORS Configuration - Production Ready with Admin Panel Support
 const corsOptions = {
   origin: function (origin, callback) {
-   const allowedOrigins = [
-      process.env.FRONTEND_URL,
-      process.env.ADMIN_URL,
-      process.env.RENDER_EXTERNAL_URL,
-      'https://teztecch-buzz.onrender.com',
-      'http://localhost:5173',      // Main Website
-      'http://localhost:5174',      // Admin Panel
-      'http://localhost:3000',
-      'http://127.0.0.1:5173',
-      'http://127.0.0.1:5174'
-    ].filter(Boolean);
+  const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    process.env.ADMIN_URL,
+    process.env.RENDER_EXTERNAL_URL,
+    'https://teztecch-buzz.onrender.com',
+    'https://teztecch-buzz.vercel.app', // Vercel domain without hyphen
+    'https://tez-tecch-buzz.vercel.app', // Vercel domain with hyphen
+    'http://localhost:5173',      // Main Website
+    'http://localhost:5174',      // Admin Panel
+    'http://localhost:3000',
+    'http://127.0.0.1:5173',
+    'http://127.0.0.1:5174'
+   ].filter(Boolean);
     
     // Allow requests with no origin (like mobile apps or curl requests)
     if (!origin || allowedOrigins.indexOf(origin) !== -1) {
